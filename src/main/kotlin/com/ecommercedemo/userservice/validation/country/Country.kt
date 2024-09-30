@@ -207,7 +207,7 @@ enum class Country(val label: String) {
 
     companion object {
         fun fromLabel(label: String): Country? {
-            return values().find { it.label == label }
+            return entries.find { it.label == label }
         }
     }
 }
