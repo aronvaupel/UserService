@@ -1,6 +1,6 @@
 spring:
   application:
-    name:userservice
+    name: userservice
   datasource:
     url: jdbc:postgresql://localhost:5432/your_database_name
     username: username
@@ -15,3 +15,6 @@ spring:
   docker:
     compose:
       enabled: false
+github:
+    username: ${GITHUB_USERNAME}
+    token: ${GITHUB_TOKEN}

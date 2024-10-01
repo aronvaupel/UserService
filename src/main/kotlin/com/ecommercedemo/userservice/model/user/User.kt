@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.model.user
 
-import com.ecommercedemo.userservice.model.BaseEntity
+import com.ecommercedemo.model.BaseEntity
 import com.ecommercedemo.userservice.model.contactdata.ContactData
 import com.ecommercedemo.userservice.validation.dateofbirth.ValidDateOfBirth
 import com.ecommercedemo.userservice.validation.gender.Gender

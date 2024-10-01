@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.model.contactdata
 
-import com.ecommercedemo.userservice.model.BaseEntity
+import com.ecommercedemo.model.BaseEntity
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.validation.country.Country
 import com.ecommercedemo.userservice.validation.email.ValidEmail

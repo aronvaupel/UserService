@@ -15,12 +15,35 @@ java {
 	}
 }
 
+fun loadEnv(): Map<String, String> {
+	val envFile = file("${rootProject.projectDir}/.env")
+	if (!envFile.exists()) {
+		throw GradleException(".env file not found")
+	}
+
+	return envFile.readLines()
+		.filter { it.isNotBlank() && !it.startsWith("#") }
+		.map { it.split("=", limit = 2) }
+		.associate { it[0] to it.getOrElse(1) { "" } }
+}
+
 repositories {
 	mavenCentral()
+	maven {
+		url = uri("https://maven.pkg.github.com/aronvaupel/Commons")
+		credentials {
+			val env = loadEnv()
+			username = env["GITHUB_USERNAME"] ?: ""
+			password = env["GITHUB_TOKEN"] ?: ""
+		}
+	}
+
 }
 
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("com.github.aronvaupel:commons:1.0.0")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.postgresql:postgresql")
 	implementation("org.springframework.boot:spring-boot-docker-compose")
@@ -30,6 +53,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.kafka:spring-kafka")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	implementation("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	testImplementation("org.springframework.security:spring-security-test")
