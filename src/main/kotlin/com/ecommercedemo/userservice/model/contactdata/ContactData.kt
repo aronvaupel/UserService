@@ -20,6 +20,7 @@ class ContactData(
     val lastName: String,
 
     @ValidEmail
+    @Column(nullable = false, unique = true)
     val email: String,
 
     @ValidPhone
@@ -47,7 +48,7 @@ class ContactData(
     @Enumerated(EnumType.ORDINAL)
     val country: Country?,
 
-    @OneToOne(mappedBy = "contactDataUpstream")
+    @OneToOne(mappedBy = "contactData")
     val user: User
 ) : BaseEntity() {
     companion object {

@@ -12,6 +12,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import java.time.LocalDate
+import java.util.*
 
 
 @Entity
@@ -22,6 +23,7 @@ class User(
     val userName: String,
 
     @ValidPassword
+    @NotBlank(message = "Password is mandatory")
     private var _password: String,
 
     @Enumerated(EnumType.ORDINAL)
@@ -35,7 +37,12 @@ class User(
     val gender: Gender?,
 
     @ValidDateOfBirth
-    val dateOfBirth: LocalDate?
+    val dateOfBirth: LocalDate?,
+
+    @ElementCollection
+    @CollectionTable(name = "user_wishlist", joinColumns = [JoinColumn(name = "user_id")])
+    @Column(name = "product_id")
+    val wishlist: MutableSet<UUID>
 ) : BaseEntity() {
     companion object {
         const val COLLECTION_NAME = "users"

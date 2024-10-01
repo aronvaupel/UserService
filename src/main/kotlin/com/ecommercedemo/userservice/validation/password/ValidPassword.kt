@@ -5,7 +5,7 @@ import jakarta.validation.Payload
 import jakarta.validation.constraints.NotBlank
 import kotlin.reflect.KClass
 
-@NotBlank(message = "Password is mandatory")
+
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [PasswordValidator::class])
