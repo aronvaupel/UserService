@@ -1,0 +1,3 @@
+package com.ecommercedemo.userservice.controller
+
+class SettingsController

@@ -40,14 +40,23 @@ repositories {
 
 }
 
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:2022.0.3")
+	}
+}
+
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("com.github.aronvaupel:commons:1.0.0")
+	implementation("com.github.aronvaupel:commons:1.0.9")
+	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.postgresql:postgresql")
 	implementation("org.springframework.boot:spring-boot-docker-compose")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")

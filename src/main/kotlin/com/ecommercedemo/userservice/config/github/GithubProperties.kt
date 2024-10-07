@@ -1,4 +1,4 @@
-package com.ecommercedemo.userservice.config
+package com.ecommercedemo.userservice.config.github
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration

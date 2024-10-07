@@ -7,7 +7,7 @@ RUN gradle build --no-daemon
 FROM alpine/java:21-jdk
 WORKDIR /app
 RUN apk update && \
-    apk add --no-cache docker
+    apk add --no-cache docker redis
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 COPY docker-compose.yml /app/docker-compose.yml
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

@@ -1,6 +1,7 @@
 package com.ecommercedemo.userservice.model.user
 
 import com.ecommercedemo.model.BaseEntity
+import com.ecommercedemo.userservice.dto.user.UserDto
 import com.ecommercedemo.userservice.model.contactdata.ContactData
 import com.ecommercedemo.userservice.validation.dateofbirth.ValidDateOfBirth
 import com.ecommercedemo.userservice.validation.gender.Gender
@@ -12,15 +13,16 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import java.time.LocalDate
-import java.util.*
+import java.time.LocalDateTime
 
 
 @Entity
 @Table(name = User.COLLECTION_NAME)
+@Suppress("unused")
 class User(
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
-    val userName: String,
+    val username: String,
 
     @ValidPassword
     @NotBlank(message = "Password is mandatory")
@@ -39,10 +41,8 @@ class User(
     @ValidDateOfBirth
     val dateOfBirth: LocalDate?,
 
-    @ElementCollection
-    @CollectionTable(name = "user_wishlist", joinColumns = [JoinColumn(name = "user_id")])
-    @Column(name = "product_id")
-    val wishlist: MutableSet<UUID>
+    var lastActive: LocalDateTime? = null
+
 ) : BaseEntity() {
     companion object {
         const val COLLECTION_NAME = "users"
@@ -56,6 +56,16 @@ class User(
             }
             _password = PasswordCrypto.hashPassword(value)
         }
+
+    fun toDto(): UserDto {
+        return UserDto(
+            id = id,
+            username = username,
+            userRole = userRole,
+            gender = gender,
+            dateOfBirth = dateOfBirth,
+        )
+    }
 
 }
 
