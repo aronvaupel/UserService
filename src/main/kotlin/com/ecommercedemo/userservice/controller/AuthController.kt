@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.controller
 
-import com.ecommercedemo.security.JwtUtil
+import com.ecommercedemo.common.security.JwtUtil
 import com.ecommercedemo.userservice.dto.auth.AuthRequest
 import com.ecommercedemo.userservice.dto.auth.AuthResponse
 import com.ecommercedemo.userservice.service.user.UserService
