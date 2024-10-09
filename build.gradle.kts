@@ -48,7 +48,7 @@ dependencyManagement {
 
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("com.github.aronvaupel:commons:1.0.20")
+	implementation("com.github.aronvaupel:commons:1.0.23")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
