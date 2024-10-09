@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.model.contactdata
 
-import com.ecommercedemo.model.BaseEntity
+import com.ecommercedemo.common.model.BaseEntity
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.validation.country.Country
 import com.ecommercedemo.userservice.validation.email.ValidEmail
@@ -12,8 +12,8 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 @Entity
-@Table(name = ContactData.COLLECTION_NAME)
-class ContactData(
+@Table(name = ContactData.STORAGE_NAME)
+open class ContactData(
     @ValidName
     val firstName: String,
 
@@ -22,7 +22,7 @@ class ContactData(
 
     @ValidEmail
     @Column(nullable = false, unique = true)
-    val email: String,
+    var email: String,
 
     @ValidPhone
     val phoneNumber: String? = null,
@@ -55,7 +55,7 @@ class ContactData(
 ) : BaseEntity() {
 
     companion object {
-        const val COLLECTION_NAME = "contact_data"
+        const val STORAGE_NAME = "contact_data"
     }
 
 }

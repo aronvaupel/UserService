@@ -1,9 +1,11 @@
 package com.ecommercedemo.userservice.service.user
 
+import com.ecommercedemo.common.model.CustomProperty
 import com.ecommercedemo.userservice.config.env.EnvironmentConfig
 import com.ecommercedemo.userservice.dto.user.RegisterUserDto
 import com.ecommercedemo.userservice.dto.user.UserDto
 import com.ecommercedemo.userservice.model.contactdata.ContactData
+import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.persistence.contactdata.IContactDataAdapter
 import com.ecommercedemo.userservice.persistence.user.IUserAdapter
@@ -24,7 +26,7 @@ class UserService(
     private val contactDataPersistence: IContactDataAdapter,
     envConfig: EnvironmentConfig,
     private val redisTemplate: RedisTemplate<String, Any>,
-    private val userPersistence: IUserAdapter
+    private val userAdapter: IUserAdapter,
 ) {
 
     private val dotenv: Dotenv? = if (envConfig.isLocalEnv) Dotenv.load() else null
@@ -32,15 +34,15 @@ class UserService(
 
     private val scheduler = Executors.newScheduledThreadPool(1)
 
-    fun getUser(id: UUID) = userPersistence.getUserById(id)
-    fun saveUser(user: User) = userPersistence.saveUser(user)
-    fun updateUser(user: User) = userPersistence.updateUser(user.id)
-    fun deleteUser(id: UUID) = userPersistence.deleteUser(id)
-    fun getUserByUsername(username: String) = userPersistence.getUserByUsername(username)
-    fun getUsers(ids: List<UUID>) = userPersistence.getUsers(ids)
+    fun getUser(id: UUID) = userAdapter.getUserById(id)
+    fun saveUser(user: User) = userAdapter.saveUser(user)
+    fun updateUser(user: User) = userAdapter.updateUser(user.id)
+    fun deleteUser(id: UUID) = userAdapter.deleteUser(id)
+    fun getUserByUsername(username: String) = userAdapter.getUserByUsername(username)
+    fun getUsers(ids: List<UUID>) = userAdapter.getUsers(ids)
 
     fun registerGuest(): UserDto {
-        val guest = userPersistence.saveUser(
+        val guest = userAdapter.saveUser(
             User(
                 username = "guest_${System.currentTimeMillis()}",
                 _password = guestPassword,
@@ -64,7 +66,7 @@ class UserService(
             firstName = dto.firstName,
             lastName = dto.lastName,
         )
-        val user = userPersistence.saveUser(
+        val user = userAdapter.saveUser(
             User(
                 username = dto.userName,
                 _password = dto.password,
@@ -117,7 +119,7 @@ class UserService(
 
     fun scheduleDeletion(userId: UUID, delay: Long) {
         scheduler.schedule({
-            userPersistence.deleteUser(userId)
+            userAdapter.deleteUser(userId)
         }, delay, TimeUnit.MILLISECONDS)
     }
 
@@ -129,9 +131,9 @@ class UserService(
                 val lastActivity =
                     LocalDateTime.ofInstant(Instant.ofEpochMilli(lastActivityTimestamp), ZoneId.systemDefault())
                 if (lastActivity.plusMinutes(15).isBefore(LocalDateTime.now())) {
-                    val user = userPersistence.getUserById(id)
+                    val user = userAdapter.getUserById(id)
                     if (user.userRole == UserRole.GUEST) {
-                        userPersistence.deleteUser(id)
+                        userAdapter.deleteUser(id)
                     } else {
                         logoutUser(id)
                     }
@@ -145,4 +147,27 @@ class UserService(
         // This is a placeholder implementation
         println("Logging out user with ID: $userId")
     }
+
+    fun updatePassword(userId: UUID, newPassword: String) {
+        val user = getUser(userId)
+        user.password = newPassword
+        saveUser(user)
+    }
+
+    fun updateUsername(userId: UUID, newUsername: String) {
+        val user = getUser(userId)
+        user.username = newUsername
+        saveUser(user)
+    }
+
+    fun addCustomPropertyToAllUsers(customProperty: UserServiceCustomProperty<*>) : CustomProperty<*> {
+        userAdapter.addCustomPropertyToAllUsers(customProperty)
+        return customProperty
+    }
+
+    fun renameCustomPropertyForAllUsers(key: String, newKey: String)  {
+        return userAdapter.renameCustomPropertyForAllUsers(key, newKey)
+    }
+
+
 }

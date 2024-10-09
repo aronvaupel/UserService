@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.model.user
 
-import com.ecommercedemo.model.BaseEntity
+import com.ecommercedemo.common.model.BaseEntity
 import com.ecommercedemo.userservice.dto.user.UserDto
 import com.ecommercedemo.userservice.model.contactdata.ContactData
 import com.ecommercedemo.userservice.validation.dateofbirth.ValidDateOfBirth
@@ -17,12 +17,12 @@ import java.time.LocalDateTime
 
 
 @Entity
-@Table(name = User.COLLECTION_NAME)
+@Table(name = User.STORAGE_NAME)
 @Suppress("unused")
-class User(
+open class User(
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
-    val username: String,
+    var username: String,
 
     @ValidPassword
     @NotBlank(message = "Password is mandatory")
@@ -45,7 +45,7 @@ class User(
 
 ) : BaseEntity() {
     companion object {
-        const val COLLECTION_NAME = "users"
+        const val STORAGE_NAME = "users"
     }
 
     var password: String
