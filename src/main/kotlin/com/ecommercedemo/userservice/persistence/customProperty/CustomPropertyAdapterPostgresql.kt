@@ -3,17 +3,13 @@ package com.ecommercedemo.userservice.persistence.customProperty
 import com.ecommercedemo.userservice.model.contactdata.ContactData
 import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
 import com.ecommercedemo.userservice.model.user.User
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
-@Component
+@Service
 class CustomPropertyAdapterPostgresql(
     private val customPropertyRepository: CustomPropertyRepository<Any>
 ) : ICustomPropertyAdapter {
 
-    @PersistenceContext
-    private lateinit var entityManager: EntityManager
     override fun save(property: UserServiceCustomProperty<*>): UserServiceCustomProperty<*> {
         return customPropertyRepository.save(property)
     }

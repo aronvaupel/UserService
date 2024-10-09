@@ -3,14 +3,12 @@ package com.ecommercedemo.userservice.persistence.user
 import com.ecommercedemo.common.model.CustomProperty
 import com.ecommercedemo.common.model.embedded.CustomPropertyData
 import com.ecommercedemo.userservice.model.user.User
-import com.ecommercedemo.userservice.service.customproperty.CustomPropertyService
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserAdapterPostgresql(
     private val userRepository: UserRepository,
-    private val customPropertyService: CustomPropertyService
 ) : IUserAdapter {
 
     override fun getAllUsers(): List<User> {
