@@ -12,7 +12,7 @@ interface IContactDataAdapter {
     fun updateContactDataByUserId(id:UUID, data: ContactData): ContactData?
     fun deleteContactDataByUserId(id: UUID)
     fun existsByMail(email: String): Boolean
-    fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty<*>)
-    fun removeCustomPropertyFromAllContactData(property: CustomProperty<*>)
+    fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty)
+    fun removeCustomPropertyFromAllContactData(property: CustomProperty)
     fun renameCustomPropertyForAllContactData(key: String, newKey: String)
 }

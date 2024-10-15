@@ -30,7 +30,7 @@ class ContactDataService(
         contactDataAdapter.deleteContactDataByUserId(id)
     }
 
-    fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty<*>): UserServiceCustomProperty<*> {
+    fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty): UserServiceCustomProperty {
         contactDataAdapter.addCustomPropertyToAllContactData(customProperty)
         return customProperty
     }

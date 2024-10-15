@@ -39,7 +39,7 @@ class UserAdapterPostgresql(
         return userRepository.findAllById(ids)
     }
 
-    override fun addCustomPropertyToAllUsers(property: CustomProperty<*>) {
+    override fun addCustomPropertyToAllUsers(property: CustomProperty) {
         val users = userRepository.findAll()
         users.forEach { user ->
             val exists = user.customProperties.any { it.key == property.key }
@@ -53,7 +53,7 @@ class UserAdapterPostgresql(
         }
     }
 
-    override fun removeCustomPropertyFromAllUsers(property: CustomProperty<*>) {
+    override fun removeCustomPropertyFromAllUsers(property: CustomProperty) {
         val users = userRepository.findAll()
         val exists = users.any { user -> user.customProperties.any { it.key == property.key } }
         if (!exists) throw IllegalArgumentException("Property with key ${property.key} does not exist")

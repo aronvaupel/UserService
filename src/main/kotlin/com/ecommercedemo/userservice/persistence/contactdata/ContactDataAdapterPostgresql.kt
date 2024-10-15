@@ -4,14 +4,14 @@ import com.ecommercedemo.common.model.CustomProperty
 import com.ecommercedemo.common.model.embedded.CustomPropertyData
 import com.ecommercedemo.userservice.model.contactdata.ContactData
 import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
-import com.ecommercedemo.userservice.service.customproperty.CustomPropertyService
+import com.ecommercedemo.userservice.persistence.customProperty.CustomPropertyAdapterPostgresql
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class ContactDataAdapterPostgresql(
     private val contactDataRepository: ContactDataRepository,
-    private val customPropertyService: CustomPropertyService
+    private val customPropertyAdapterPostgresql: CustomPropertyAdapterPostgresql,
 ) : IContactDataAdapter {
 
     override fun getAllContactData(): List<ContactData> {
@@ -39,7 +39,7 @@ class ContactDataAdapterPostgresql(
         return contactDataRepository.existsByEmail(email)
     }
 
-    override fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty<*>) {
+    override fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty) {
         val contactData = contactDataRepository.findAll()
         contactData.forEach { data ->
             val exists = data.customProperties.any { it.key == customProperty.key }
@@ -55,8 +55,8 @@ class ContactDataAdapterPostgresql(
         }
     }
 
-    override fun removeCustomPropertyFromAllContactData(property: CustomProperty<*>) {
-        val isPresent = customPropertyService.existsByEntityAndKey(ContactData::class.simpleName!!, property.key)
+    override fun removeCustomPropertyFromAllContactData(property: CustomProperty) {
+        val isPresent = customPropertyAdapterPostgresql.existsByEntityAndKey(ContactData::class.simpleName!!, property.key)
         if (!isPresent) throw IllegalArgumentException("Property with key ${property.key} does not exist")
         val contactData = contactDataRepository.findAll()
         contactData.forEach { data ->

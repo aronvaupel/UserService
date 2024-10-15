@@ -22,33 +22,33 @@ import java.time.LocalDateTime
 open class User(
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
-    var username: String,
+    open var username: String,
 
     @ValidPassword
     @NotBlank(message = "Password is mandatory")
     private var _password: String,
 
     @Enumerated(EnumType.ORDINAL)
-    val userRole: UserRole,
+    open val userRole: UserRole,
 
     @OneToOne
     @JoinColumn(name = "contact_data_id")
-    val contactData: ContactData?,
+    open val contactData: ContactData?,
 
     @Enumerated(EnumType.ORDINAL)
-    val gender: Gender?,
+    open val gender: Gender?,
 
     @ValidDateOfBirth
-    val dateOfBirth: LocalDate?,
+    open val dateOfBirth: LocalDate?,
 
-    var lastActive: LocalDateTime? = null
+    open var lastActive: LocalDateTime? = null
 
 ) : BaseEntity() {
     companion object {
         const val STORAGE_NAME = "users"
     }
 
-    var password: String
+    open var password: String
         get() = _password
         set(value) {
             if (!PasswordValidator.isValid(value, null)) {

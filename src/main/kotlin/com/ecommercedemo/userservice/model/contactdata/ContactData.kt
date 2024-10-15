@@ -15,43 +15,43 @@ import jakarta.validation.constraints.Size
 @Table(name = ContactData.STORAGE_NAME)
 open class ContactData(
     @ValidName
-    val firstName: String,
+    open val firstName: String,
 
     @ValidName
-    val lastName: String,
+    open val lastName: String,
 
     @ValidEmail
     @Column(nullable = false, unique = true)
-    var email: String,
+    open var email: String,
 
     @ValidPhone
-    val phoneNumber: String? = null,
+    open val phoneNumber: String? = null,
 
     @field:Size(max = 10, message = "House number must be less than 100 characters")
     @ExcludeSpecialCharacters
-    val street: String? = null,
+    open val street: String? = null,
 
     @field:Size(max = 10, message = "House number must be less than 10 characters")
     @ExcludeSpecialCharacters
-    val houseNumber: String? = null,
+    open val houseNumber: String? = null,
 
     @field:Size(max = 100, message = "Additional address info must be less than 100 characters")
-    val additionalAddressInfo: String? = null,
+    open val additionalAddressInfo: String? = null,
 
     @field:Size(max = 20, message = "ZIP code must be less than 20 characters")
     @ExcludeSpecialCharacters
-    val zipCode: String? = null,
+    open val zipCode: String? = null,
 
     @field:Size(max = 50, message = "City must be less than 50 characters")
     @ExcludeSpecialCharacters
-    val city: String? = null,
+    open val city: String? = null,
 
     @Enumerated(EnumType.ORDINAL)
-    val country: Country? = null,
+    open val country: Country? = null,
 
     @OneToOne(mappedBy = "contactData")
     @NotNull
-    val user: User? = null
+    open val user: User? = null
 ) : BaseEntity() {
 
     companion object {

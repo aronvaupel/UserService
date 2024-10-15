@@ -18,8 +18,8 @@ class SettingsController(
     @PostMapping("/custom-property/user")
     fun createUserCustomProperty(
         @RequestParam userId: UUID,
-        @RequestBody customProperty: UserServiceCustomProperty<*>
-    ): ResponseEntity<CustomProperty<*>> {
+        @RequestBody customProperty: UserServiceCustomProperty
+    ): ResponseEntity<CustomProperty> {
         val createdProperty = customPropertyService.addCustomPropertyToAllUsers(customProperty)
         return ResponseEntity.ok(createdProperty)
     }
@@ -27,8 +27,8 @@ class SettingsController(
     @PostMapping("/custom-property/contact-data")
     fun createContactDataCustomProperty(
         @RequestParam contactDataId: UUID,
-        @RequestBody customProperty: UserServiceCustomProperty<*>
-    ): ResponseEntity<CustomProperty<*>> {
+        @RequestBody customProperty: UserServiceCustomProperty
+    ): ResponseEntity<CustomProperty> {
         val createdProperty = customPropertyService.addCustomPropertyToAllContactData(customProperty)
         return ResponseEntity.ok(createdProperty)
     }
@@ -37,7 +37,7 @@ class SettingsController(
     fun renameUserCustomProperty(
         @PathVariable key: String,
         @RequestParam newKey: String
-    ): ResponseEntity<UserServiceCustomProperty<*>> {
+    ): ResponseEntity<UserServiceCustomProperty> {
         return ResponseEntity.ok(customPropertyService.renameCustomProperty("ContactData", key, newKey))
     }
 
@@ -45,7 +45,7 @@ class SettingsController(
     fun renameContactDataCustomProperty(
         @PathVariable key: String,
         @RequestParam newKey: String
-    ): ResponseEntity<UserServiceCustomProperty<*>> {
+    ): ResponseEntity<UserServiceCustomProperty> {
         return ResponseEntity.ok(customPropertyService.renameCustomProperty("ContactData", key, newKey))
     }
 

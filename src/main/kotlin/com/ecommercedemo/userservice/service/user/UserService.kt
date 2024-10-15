@@ -160,7 +160,7 @@ class UserService(
         saveUser(user)
     }
 
-    fun addCustomPropertyToAllUsers(customProperty: UserServiceCustomProperty<*>) : CustomProperty<*> {
+    fun addCustomPropertyToAllUsers(customProperty: UserServiceCustomProperty) : CustomProperty {
         userAdapter.addCustomPropertyToAllUsers(customProperty)
         return customProperty
     }

@@ -12,7 +12,7 @@ interface IUserAdapter {
     fun deleteUser(id: UUID)
     fun getUserByUsername(username: String): User
     fun getUsers(ids: List<UUID>): List<User>
-    fun addCustomPropertyToAllUsers(property: CustomProperty<*>)
-    fun removeCustomPropertyFromAllUsers(property: CustomProperty<*>)
+    fun addCustomPropertyToAllUsers(property: CustomProperty)
+    fun removeCustomPropertyFromAllUsers(property: CustomProperty)
     fun renameCustomPropertyForAllUsers(key: String, newKey: String)
 }
