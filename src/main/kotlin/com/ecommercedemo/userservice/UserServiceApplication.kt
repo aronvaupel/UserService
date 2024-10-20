@@ -1,12 +1,11 @@
 package com.ecommercedemo.userservice
 
-import com.ecommercedemo.common.redis.RedisConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.ComponentScan
 
 @SpringBootApplication
-@Import(RedisConfig::class)
+@ComponentScan("com.ecommercedemo.userservice", "com.ecommercedemo.common")
 class UserServiceApplication
 
 fun main(args: Array<String>) {

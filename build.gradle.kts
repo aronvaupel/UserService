@@ -27,6 +27,8 @@ fun loadEnv(): Map<String, String> {
 		.associate { it[0] to it.getOrElse(1) { "" } }
 }
 
+extra["springCloudVersion"] = "2023.0.3"  // Add this
+
 repositories {
 	mavenCentral()
 	maven {
@@ -37,13 +39,19 @@ repositories {
 			password = env["GITHUB_TOKEN"] ?: ""
 		}
 	}
+	maven {
+		url = uri("https://repo.spring.io/milestone")
+	}
+	maven {
+		url = uri("https://repo.spring.io/snapshot")
+	}
 
 }
 
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.15.2")
-	implementation("com.github.aronvaupel:commons:1.0.37")
+	implementation("com.github.aronvaupel:commons:1.1.7")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.8.3")
 	implementation("org.hibernate:hibernate-core:6.6.1.Final")
@@ -59,6 +67,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	implementation("org.springframework.kafka:spring-kafka")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	implementation("org.springframework.boot:spring-boot-configuration-processor")
@@ -66,6 +75,12 @@ dependencies {
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+	}
 }
 
 kotlin {
