@@ -1,8 +1,8 @@
 package com.ecommercedemo.userservice.model.contactdata
 
 import com.ecommercedemo.common.model.BaseEntity
+import com.ecommercedemo.common.validation.country.Country
 import com.ecommercedemo.userservice.model.user.User
-import com.ecommercedemo.userservice.validation.country.Country
 import com.ecommercedemo.userservice.validation.email.ValidEmail
 import com.ecommercedemo.userservice.validation.name.ValidName
 import com.ecommercedemo.userservice.validation.phone.ValidPhone
