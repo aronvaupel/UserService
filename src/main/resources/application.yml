@@ -4,7 +4,7 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
   datasource:
-    url: jdbc:postgresql://localhost:5432/UserServiceDb
+    url: jdbc:postgresql://postgresql:5432/UserServiceDb
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
@@ -15,17 +15,13 @@ spring:
       '[hypersistence.utils.enable_types_contributor]': false
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  docker:
-    compose:
-      enabled: false
+
   data:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
-github:
-    username: ${GITHUB_USERNAME}
-    token: ${GITHUB_TOKEN}
+
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://eureka-service:8761/eureka/

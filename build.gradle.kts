@@ -27,7 +27,7 @@ fun loadEnv(): Map<String, String> {
 		.associate { it[0] to it.getOrElse(1) { "" } }
 }
 
-extra["springCloudVersion"] = "2023.0.3"  // Add this
+extra["springCloudVersion"] = "2023.0.3"
 
 repositories {
 	mavenCentral()
@@ -55,7 +55,6 @@ dependencies {
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.8.3")
 	implementation("org.hibernate:hibernate-core:6.6.1.Final")
-	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("javax.xml.bind:jaxb-api:2.3.1")
 	implementation("org.glassfish.jaxb:jaxb-runtime:2.3.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -64,7 +63,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
-	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
