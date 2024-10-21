@@ -16,6 +16,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  docker:
+    compose:
+      enabled: false
+
   data:
     redis:
       host: ${REDIS_HOST}
