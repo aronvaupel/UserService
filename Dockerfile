@@ -4,8 +4,8 @@ FROM gradle:8.10.2-jdk21 AS build
 ARG GITHUB_USERNAME
 ARG GITHUB_TOKEN
 
-# Clone the repository from GitHub
-RUN git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/aronvaupel/UserService.git /home/gradle/src
+# Clone the repository from GitHub with shallow clone (--depth 1)
+RUN git clone --depth 1 https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/aronvaupel/UserService.git /home/gradle/src
 
 WORKDIR /home/gradle/src
 
