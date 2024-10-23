@@ -25,6 +25,12 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans
+
 eureka:
   client:
     service-url:
