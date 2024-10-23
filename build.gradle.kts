@@ -51,7 +51,7 @@ repositories {
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.15.2")
-	implementation("com.github.aronvaupel:commons:1.3.16")
+	implementation("com.github.aronvaupel:commons:1.3.17")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.8.3")
 	implementation("org.hibernate:hibernate-core:6.6.1.Final")
