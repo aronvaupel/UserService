@@ -1,5 +1,3 @@
-import org.gradle.internal.classpath.Instrumented.systemProperty
-
 plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
@@ -17,12 +15,12 @@ java {
 	}
 }
 
-// Load environment variables from .env file
 fun loadEnv(): Map<String, String> {
 	val envFile = file("${rootProject.projectDir}/.env")
 	if (!envFile.exists()) {
 		throw GradleException(".env file not found")
 	}
+
 	return envFile.readLines()
 		.filter { it.isNotBlank() && !it.startsWith("#") }
 		.map { it.split("=", limit = 2) }
@@ -41,9 +39,17 @@ repositories {
 			password = env["GITHUB_TOKEN"] ?: ""
 		}
 	}
-	maven { url = uri("https://repo.spring.io/milestone") }
-	maven { url = uri("https://repo.spring.io/snapshot") }
+	maven {
+		url = uri("https://repo.spring.io/milestone")
+	}
+	maven {
+		url = uri("https://repo.spring.io/snapshot")
+	}
+
 }
+
+val isDevProfile: Boolean = project.hasProperty("spring.profiles.active") && project.property("spring.profiles.active") == "dev"
+
 
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -62,6 +68,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	if (!isDevProfile) {
+		implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+	}
 	implementation("org.springframework.kafka:spring-kafka")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	implementation("org.springframework.boot:spring-boot-configuration-processor")
@@ -69,11 +78,6 @@ dependencies {
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-	// Conditionally exclude Eureka for dev profile
-	if (!project.hasProperty("dev")) {
-		implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-	}
 }
 
 dependencyManagement {
@@ -90,15 +94,4 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-
-tasks.named("bootRun") {
-	doFirst {
-		if (project.hasProperty("dev")) {
-			println("Running with development profile, Eureka excluded.")
-			systemProperty("spring.profiles.active", "dev")
-		} else {
-			println("Running with default profile.")
-		}
-	}
 }
