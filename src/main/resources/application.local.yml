@@ -1,7 +1,0 @@
-app:
-  env:
-    local: true
-jwt:
-  secret: ${JWT_SECRET}
-guest:
-  password: ${GUEST_PASSWORD}
