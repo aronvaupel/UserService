@@ -3,13 +3,19 @@ spring:
     url: jdbc:postgresql://postgresql_user-service:5432/UserServiceDB
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
+
 app:
   env:
     local: true
+
 jwt:
   secret: ${JWT_SECRET}
+
 guest:
   password: ${GUEST_PASSWORD}
+
 eureka:
   client:
     enabled: false
+    fetch-registry: false
+    register-with-eureka: false
