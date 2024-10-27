@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
 @Configuration
-@Profile("dev")  // Only apply this exclusion in the dev profile
+@Profile("dev")
 @EnableAutoConfiguration(exclude = [EurekaClientAutoConfiguration::class])
 class ServiceDiscoveryConfig
