@@ -13,3 +13,15 @@ jwt:
 
 guest:
   password: ${GUEST_PASSWORD}
+
+eureka:
+  client:
+    enabled: false
+    fetch-registry: false
+    register-with-eureka: false
+
+logging:
+  level:
+    com.netflix.eureka: OFF
+    com.netflix.discovery: OFF
+    org.springframework.cloud.netflix.eureka: OFF
