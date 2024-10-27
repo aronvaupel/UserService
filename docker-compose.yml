@@ -1,5 +1,8 @@
 version: '3.8'
 
+x-environment:
+  project_name_dev: &project_name_dev "user-service-dev"
+
 services:
   user-service:
     image: user-service:latest
@@ -9,7 +12,7 @@ services:
       args:
         - GITHUB_USERNAME=${GITHUB_USERNAME}
         - GITHUB_TOKEN=${GITHUB_TOKEN}
-    container_name: user-service
+    container_name: user-service-dev
     working_dir: /app
     ports:
       - "8080:8081"
@@ -29,7 +32,7 @@ services:
 
   postgresql_user-service:
     image: postgres:15
-    container_name: postgresql_user-service
+    container_name: postgresql_user-service-dev
     environment:
       POSTGRES_DB: UserServiceDB
       POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
@@ -41,7 +44,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.2.1
-    container_name: kafka
+    container_name: kafka-user-service-dev
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -54,7 +57,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.2.1
-    container_name: zookeeper
+    container_name: zookeeper-user-service-dev
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -63,7 +66,7 @@ services:
 
   redis:
     image: redis:7.0
-    container_name: redis
+    container_name: redis-user-service-dev
     ports:
       - "6379:6379"
     volumes:
