@@ -1,7 +1,10 @@
 package com.ecommercedemo.userservice.service.user
 
+import com.ecommercedemo.common.kafka.EntityEventProducer
+import com.ecommercedemo.common.kafka.EntityEventType
 import com.ecommercedemo.common.model.CustomProperty
-import com.ecommercedemo.userservice.config.env.EnvironmentConfig
+import com.ecommercedemo.common.security.EnvConfig
+import com.ecommercedemo.common.validation.userrole.UserRole
 import com.ecommercedemo.userservice.dto.user.RegisterUserDto
 import com.ecommercedemo.userservice.dto.user.UserDto
 import com.ecommercedemo.userservice.model.contactdata.ContactData
@@ -9,7 +12,6 @@ import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomPrope
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.persistence.contactdata.IContactDataAdapter
 import com.ecommercedemo.userservice.persistence.user.IUserAdapter
-import com.ecommercedemo.userservice.validation.userrole.UserRole
 import io.github.cdimascio.dotenv.Dotenv
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
@@ -23,8 +25,9 @@ import java.util.concurrent.TimeUnit
 
 @Service
 class UserService(
-    private val contactDataPersistence: IContactDataAdapter,
-    envConfig: EnvironmentConfig,
+    private val contactDataAdapter: IContactDataAdapter,
+    envConfig: EnvConfig,
+    private val eventProducer: EntityEventProducer,
     private val redisTemplate: RedisTemplate<String, Any>,
     private val userAdapter: IUserAdapter,
 ) {
@@ -56,9 +59,8 @@ class UserService(
         return guest
     }
 
-
     fun registerUser(dto: RegisterUserDto): UserDto {
-        if (emailIsUnique(dto.email)) {
+        if (!emailIsUnique(dto.email)) {
             throw IllegalArgumentException("Email already exists")
         }
         val contactData = ContactData(
@@ -66,22 +68,29 @@ class UserService(
             firstName = dto.firstName,
             lastName = dto.lastName,
         )
-        val user = userAdapter.saveUser(
-            User(
+        val user = User(
                 username = dto.userName,
-                _password = dto.password,
+                _password = "",
                 userRole = UserRole.REGISTERED_USER,
-                contactData = ContactData(
-                    email = dto.email,
-                    firstName = dto.firstName,
-                    lastName = dto.lastName,
-                ),
+                contactData = contactData,
                 gender = null,
                 dateOfBirth = null,
             )
+        user.password = dto.password
+        userAdapter.saveUser(user)
+
+        eventProducer.emit(
+            User::class.java,
+            user.id,
+            EntityEventType.CREATE,
+            user.getChangedProperties()
         )
-        contactDataPersistence.saveContactData(contactData)
-        //TODO: Send email to user and send events for  User and ContactData
+        eventProducer.emit(
+            ContactData::class.java,
+            contactData.id,
+            EntityEventType.CREATE,
+            contactData.getChangedProperties()
+        )
         return user.toDto()
     }
 
@@ -106,7 +115,7 @@ class UserService(
     }
 
     fun emailIsUnique(email: String): Boolean {
-        return contactDataPersistence.existsByMail(email)
+        return !contactDataAdapter.existsByMail(email)
     }
 
     fun updateLastActivity(userId: UUID, lastActivityTimestamp: Long) {

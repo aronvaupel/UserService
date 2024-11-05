@@ -13,10 +13,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 app:
   env:
+    # Fixme
     local: true
 
-jwt:
-  secret: ${JWT_SECRET}
-
-guest:
-  password: ${GUEST_PASSWORD}

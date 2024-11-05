@@ -1,7 +1,7 @@
 package com.ecommercedemo.userservice.dto.user
 
-import com.ecommercedemo.userservice.validation.gender.Gender
-import com.ecommercedemo.userservice.validation.userrole.UserRole
+import com.ecommercedemo.common.validation.gender.Gender
+import com.ecommercedemo.common.validation.userrole.UserRole
 import java.time.LocalDate
 import java.util.*
 

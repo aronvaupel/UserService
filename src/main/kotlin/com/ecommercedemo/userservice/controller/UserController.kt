@@ -4,13 +4,16 @@ import com.ecommercedemo.userservice.dto.user.RegisterUserDto
 import com.ecommercedemo.userservice.dto.user.UserDto
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.service.user.UserService
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @RestController
 @RequestMapping("/users")
+@Validated
 class UserController(
     private val userService: UserService
 ) {
@@ -31,7 +34,7 @@ class UserController(
 
     @PostMapping
     fun registerUser(
-        @RequestBody dto: RegisterUserDto
+        @RequestBody @Valid dto: RegisterUserDto
     ): ResponseEntity<UserDto> {
         return ResponseEntity.ok(
             userService.registerUser(dto)

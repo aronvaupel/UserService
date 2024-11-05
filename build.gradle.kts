@@ -49,12 +49,12 @@ repositories {
 }
 
 val isDevProfile: Boolean = project.hasProperty("spring.profiles.active") && project.property("spring.profiles.active") == "dev"
-
+val isLocalProfile: Boolean = project.hasProperty("spring.profiles.active") && project.property("spring.profiles.active") == "local"
 
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.15.2")
-	implementation("com.github.aronvaupel:commons:1.3.26")
+	implementation("com.github.aronvaupel:commons:1.3.36")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.8.3")
 	implementation("org.hibernate:hibernate-core:6.6.1.Final")
@@ -66,9 +66,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	//Fixme
+	implementation("org.springframework.boot:spring-boot-starter-security:3.3.4")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	if (!isDevProfile) {
+	if (!isDevProfile && !isLocalProfile) {
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	}
 	implementation("org.springframework.kafka:spring-kafka")
@@ -76,7 +78,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
-	testImplementation("org.springframework.security:spring-security-test")
+	if (!isLocalProfile) {
+		testImplementation("org.springframework.security:spring-security-test")
+	}
+
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
