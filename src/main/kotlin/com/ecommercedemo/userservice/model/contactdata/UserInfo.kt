@@ -13,8 +13,8 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 @Entity
-@Table(name = ContactData.STORAGE_NAME)
-open class ContactData(
+@Table(name = UserInfo.STORAGE_NAME)
+open class UserInfo(
     @ValidName
     open val firstName: String,
 
@@ -50,7 +50,7 @@ open class ContactData(
     @Enumerated(EnumType.ORDINAL)
     open val country: Country? = null,
 
-    @OneToOne(mappedBy = "contactData")
+    @OneToOne(mappedBy = "userInfo")
     @NotNull
     open val user: User? = null
 ) : BaseEntity() {

@@ -7,8 +7,8 @@ import com.ecommercedemo.common.security.EnvConfig
 import com.ecommercedemo.common.validation.userrole.UserRole
 import com.ecommercedemo.userservice.dto.user.RegisterUserDto
 import com.ecommercedemo.userservice.dto.user.UserDto
-import com.ecommercedemo.userservice.model.contactdata.ContactData
-import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
+import com.ecommercedemo.userservice.model.contactdata.UserInfo
+import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.persistence.contactdata.IContactDataAdapter
 import com.ecommercedemo.userservice.persistence.user.IUserAdapter
@@ -50,7 +50,7 @@ class UserService(
                 username = "guest_${System.currentTimeMillis()}",
                 _password = guestPassword,
                 userRole = UserRole.GUEST,
-                contactData = null,
+                userInfo = null,
                 gender = null,
                 dateOfBirth = null
             )
@@ -63,7 +63,7 @@ class UserService(
         if (!emailIsUnique(dto.email)) {
             throw IllegalArgumentException("Email already exists")
         }
-        val contactData = ContactData(
+        val userInfo = UserInfo(
             email = dto.email,
             firstName = dto.firstName,
             lastName = dto.lastName,
@@ -72,7 +72,7 @@ class UserService(
                 username = dto.userName,
                 _password = "",
                 userRole = UserRole.REGISTERED_USER,
-                contactData = contactData,
+                userInfo = userInfo,
                 gender = null,
                 dateOfBirth = null,
             )
@@ -86,10 +86,10 @@ class UserService(
             user.getChangedProperties()
         )
         eventProducer.emit(
-            ContactData::class.java,
-            contactData.id,
+            UserInfo::class.java,
+            userInfo.id,
             EntityEventType.CREATE,
-            contactData.getChangedProperties()
+            userInfo.getChangedProperties()
         )
         return user.toDto()
     }
@@ -169,7 +169,7 @@ class UserService(
         saveUser(user)
     }
 
-    fun addCustomPropertyToAllUsers(customProperty: UserServiceCustomProperty) : CustomProperty {
+    fun addCustomPropertyToAllUsers(customProperty: UserServicePseudoProperty) : CustomProperty {
         userAdapter.addCustomPropertyToAllUsers(customProperty)
         return customProperty
     }

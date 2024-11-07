@@ -2,18 +2,15 @@ package com.ecommercedemo.userservice.model.user
 
 import com.ecommercedemo.common.kafka.ChangedProperty
 import com.ecommercedemo.common.model.BaseEntity
-import com.ecommercedemo.common.validation.dateofbirth.ValidDateOfBirth
-import com.ecommercedemo.common.validation.gender.Gender
 import com.ecommercedemo.common.validation.password.PasswordCrypto
 import com.ecommercedemo.common.validation.password.PasswordValidator
 import com.ecommercedemo.common.validation.password.ValidPassword
 import com.ecommercedemo.common.validation.userrole.UserRole
 import com.ecommercedemo.userservice.dto.user.UserDto
-import com.ecommercedemo.userservice.model.contactdata.ContactData
+import com.ecommercedemo.userservice.model.contactdata.UserInfo
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 
@@ -34,13 +31,7 @@ open class User(
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "contact_data_id", referencedColumnName = "id")
-    open val contactData: ContactData?,
-
-    @Enumerated(EnumType.ORDINAL)
-    open val gender: Gender?,
-
-    @ValidDateOfBirth
-    open val dateOfBirth: LocalDate?,
+    open val userInfo: UserInfo?,
 
     open var lastActive: LocalDateTime? = null
 
@@ -75,8 +66,6 @@ open class User(
         properties.add(ChangedProperty("updatedAt", updatedAt))
         properties.add(ChangedProperty("username", username))
         properties.add(ChangedProperty("userRole", userRole))
-        gender?.let { properties.add(ChangedProperty("gender", it)) }
-        dateOfBirth?.let { properties.add(ChangedProperty("dateOfBirth", it)) }
         lastActive?.let { properties.add(ChangedProperty("lastActive", it)) }
         return properties
     }

@@ -1,7 +1,7 @@
 package com.ecommercedemo.userservice.service.contactdata
 
-import com.ecommercedemo.userservice.model.contactdata.ContactData
-import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
+import com.ecommercedemo.userservice.model.contactdata.UserInfo
+import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.persistence.contactdata.IContactDataAdapter
 import org.springframework.stereotype.Service
 import java.util.*
@@ -10,19 +10,19 @@ import java.util.*
 class ContactDataService(
     private val contactDataAdapter: IContactDataAdapter
 ) {
-    fun getAllContactData(): List<ContactData> {
+    fun getAllContactData(): List<UserInfo> {
         return contactDataAdapter.getAllContactData()
     }
 
-    fun getContactDataByUserId(id: UUID): ContactData? {
+    fun getContactDataByUserId(id: UUID): UserInfo? {
         return contactDataAdapter.getContactDataByUserId(id)
     }
 
-    fun saveContactData(data: ContactData): ContactData {
+    fun saveContactData(data: UserInfo): UserInfo {
         return contactDataAdapter.saveContactData(data)
     }
 
-    fun updateContactDataByUserId(id: UUID, data: ContactData): ContactData? {
+    fun updateContactDataByUserId(id: UUID, data: UserInfo): UserInfo? {
         return contactDataAdapter.updateContactDataByUserId(id, data)
     }
 
@@ -30,7 +30,7 @@ class ContactDataService(
         contactDataAdapter.deleteContactDataByUserId(id)
     }
 
-    fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty): UserServiceCustomProperty {
+    fun addCustomPropertyToAllContactData(customProperty: UserServicePseudoProperty): UserServicePseudoProperty {
         contactDataAdapter.addCustomPropertyToAllContactData(customProperty)
         return customProperty
     }

@@ -1,12 +1,12 @@
 package com.ecommercedemo.userservice.persistence.customProperty
 
-import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
+import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
-interface CustomPropertyRepository: JpaRepository<UserServiceCustomProperty, UUID> {
-    fun getAllByEntityClassName(entityClassName: String): List<UserServiceCustomProperty>
-    fun getByEntityClassNameAndKey(entityClassName: String, key: String): UserServiceCustomProperty?
+interface CustomPropertyRepository: JpaRepository<UserServicePseudoProperty, UUID> {
+    fun getAllByEntityClassName(entityClassName: String): List<UserServicePseudoProperty>
+    fun getByEntityClassNameAndKey(entityClassName: String, key: String): UserServicePseudoProperty?
     fun deleteByEntityClassNameAndKey(entityClassName: String, key: String)
     fun existsByEntityClassNameAndKey(entityClassName: String, key: String): Boolean
 }

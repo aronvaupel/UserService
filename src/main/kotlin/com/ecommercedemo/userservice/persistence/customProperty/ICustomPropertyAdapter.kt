@@ -1,15 +1,15 @@
 package com.ecommercedemo.userservice.persistence.customProperty
 
-import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
+import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 
 interface ICustomPropertyAdapter {
-    fun save(property: UserServiceCustomProperty): UserServiceCustomProperty
-    fun getAllUserCustomProperties(): List<UserServiceCustomProperty>
+    fun save(property: UserServicePseudoProperty): UserServicePseudoProperty
+    fun getAllUserCustomProperties(): List<UserServicePseudoProperty>
     fun existsByEntityAndKey(entity: String, key: String): Boolean
-    fun getAllContactDataCustomProperties(): List<UserServiceCustomProperty>
-    fun getUserCustomPropertyByKey(key: String): UserServiceCustomProperty?
-    fun getContactDataCustomPropertyByKey(key: String): UserServiceCustomProperty?
+    fun getAllContactDataCustomProperties(): List<UserServicePseudoProperty>
+    fun getUserCustomPropertyByKey(key: String): UserServicePseudoProperty?
+    fun getContactDataCustomPropertyByKey(key: String): UserServicePseudoProperty?
     fun deleteCustomPropertyByEntityAndKey(entity: String, key: String)
-    fun createCustomProperty(property: UserServiceCustomProperty): UserServiceCustomProperty
-    fun renameCustomProperty(entity: String, key: String, newKey: String): UserServiceCustomProperty
+    fun createCustomProperty(property: UserServicePseudoProperty): UserServicePseudoProperty
+    fun renameCustomProperty(entity: String, key: String, newKey: String): UserServicePseudoProperty
 }

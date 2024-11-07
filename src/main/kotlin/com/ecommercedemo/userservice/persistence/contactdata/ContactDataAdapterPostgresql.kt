@@ -2,8 +2,8 @@ package com.ecommercedemo.userservice.persistence.contactdata
 
 import com.ecommercedemo.common.model.CustomProperty
 import com.ecommercedemo.common.model.embedded.CustomPropertyData
-import com.ecommercedemo.userservice.model.contactdata.ContactData
-import com.ecommercedemo.userservice.model.customProperty.UserServiceCustomProperty
+import com.ecommercedemo.userservice.model.contactdata.UserInfo
+import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.persistence.customProperty.CustomPropertyAdapterPostgresql
 import org.springframework.stereotype.Service
 import java.util.*
@@ -14,19 +14,19 @@ class ContactDataAdapterPostgresql(
     private val customPropertyAdapterPostgresql: CustomPropertyAdapterPostgresql,
 ) : IContactDataAdapter {
 
-    override fun getAllContactData(): List<ContactData> {
+    override fun getAllContactData(): List<UserInfo> {
         return contactDataRepository.findAll()
     }
 
-    override fun saveContactData(data: ContactData): ContactData {
+    override fun saveContactData(data: UserInfo): UserInfo {
         return contactDataRepository.save(data)
     }
 
-    override fun getContactDataByUserId(id: UUID): ContactData? {
+    override fun getContactDataByUserId(id: UUID): UserInfo? {
         return contactDataRepository.findById(id).orElseThrow()
     }
 
-    override fun updateContactDataByUserId(id: UUID, data: ContactData): ContactData? {
+    override fun updateContactDataByUserId(id: UUID, data: UserInfo): UserInfo? {
         return contactDataRepository.updateContactDataByUser_Id(id, data)
 
     }
@@ -39,14 +39,14 @@ class ContactDataAdapterPostgresql(
         return contactDataRepository.existsByEmail(email)
     }
 
-    override fun addCustomPropertyToAllContactData(customProperty: UserServiceCustomProperty) {
+    override fun addCustomPropertyToAllContactData(customProperty: UserServicePseudoProperty) {
         val contactData = contactDataRepository.findAll()
         contactData.forEach { data ->
             val exists = data.customProperties.any { it.key == customProperty.key }
             if (exists) throw IllegalArgumentException("Property with key ${customProperty.key} already exists")
             data.customProperties.add(
                 CustomPropertyData.serialize(
-                    entity = ContactData::class.simpleName!!,
+                    entity = UserInfo::class.simpleName!!,
                     key = customProperty.key,
                     value = null
                 )
@@ -56,7 +56,7 @@ class ContactDataAdapterPostgresql(
     }
 
     override fun removeCustomPropertyFromAllContactData(property: CustomProperty) {
-        val isPresent = customPropertyAdapterPostgresql.existsByEntityAndKey(ContactData::class.simpleName!!, property.key)
+        val isPresent = customPropertyAdapterPostgresql.existsByEntityAndKey(UserInfo::class.simpleName!!, property.key)
         if (!isPresent) throw IllegalArgumentException("Property with key ${property.key} does not exist")
         val contactData = contactDataRepository.findAll()
         contactData.forEach { data ->
