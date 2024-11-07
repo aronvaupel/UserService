@@ -54,8 +54,6 @@ open class User(
             id = id,
             username = username,
             userRole = userRole,
-            gender = gender,
-            dateOfBirth = dateOfBirth,
         )
     }
 
