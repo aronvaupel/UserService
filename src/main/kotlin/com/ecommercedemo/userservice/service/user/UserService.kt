@@ -7,11 +7,11 @@ import com.ecommercedemo.common.security.EnvConfig
 import com.ecommercedemo.common.validation.userrole.UserRole
 import com.ecommercedemo.userservice.dto.user.RegisterUserDto
 import com.ecommercedemo.userservice.dto.user.UserDto
-import com.ecommercedemo.userservice.model.contactdata.UserInfo
 import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.model.user.User
-import com.ecommercedemo.userservice.persistence.contactdata.IContactDataAdapter
+import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import com.ecommercedemo.userservice.persistence.user.IUserAdapter
+import com.ecommercedemo.userservice.persistence.userinfo.IUserInfoAdapter
 import io.github.cdimascio.dotenv.Dotenv
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 
 @Service
 class UserService(
-    private val contactDataAdapter: IContactDataAdapter,
+    private val contactDataAdapter: IUserInfoAdapter,
     envConfig: EnvConfig,
     private val eventProducer: EntityEventProducer,
     private val redisTemplate: RedisTemplate<String, Any>,
@@ -51,8 +51,6 @@ class UserService(
                 _password = guestPassword,
                 userRole = UserRole.GUEST,
                 userInfo = null,
-                gender = null,
-                dateOfBirth = null
             )
         ).toDto()
         scheduleDeletion(guest.id, 15 * 60 * 1000)
@@ -69,12 +67,10 @@ class UserService(
             lastName = dto.lastName,
         )
         val user = User(
-                username = dto.userName,
+                username = dto.username,
                 _password = "",
                 userRole = UserRole.REGISTERED_USER,
                 userInfo = userInfo,
-                gender = null,
-                dateOfBirth = null,
             )
         user.password = dto.password
         userAdapter.saveUser(user)

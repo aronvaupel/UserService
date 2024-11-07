@@ -1,18 +1,18 @@
 package com.ecommercedemo.userservice.service.pseudoproperty
 
-import com.ecommercedemo.userservice.model.contactdata.UserInfo
 import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.model.user.User
-import com.ecommercedemo.userservice.persistence.customProperty.ICustomPropertyAdapter
+import com.ecommercedemo.userservice.model.userinfo.UserInfo
+import com.ecommercedemo.userservice.persistence.pseudoproperty.IPseudoPropertyAdapter
 import com.ecommercedemo.userservice.persistence.user.UserAdapterPostgresql
-import com.ecommercedemo.userservice.service.contactdata.ContactDataService
+import com.ecommercedemo.userservice.service.userinfo.UserInfoService
 import org.springframework.stereotype.Service
 
 @Service
 class PseudoPropertyService(
-    private val contactDataService: ContactDataService,
+    private val userInfoService: UserInfoService,
     private val userAdapterPostgresql: UserAdapterPostgresql,
-    private val customPropertyAdapter: ICustomPropertyAdapter,
+    private val customPropertyAdapter: IPseudoPropertyAdapter,
 ) {
     fun getAllUserCustomProperties(): List<UserServicePseudoProperty> {
         return customPropertyAdapter.getAllUserCustomProperties()
@@ -43,7 +43,7 @@ class PseudoPropertyService(
 
     fun addCustomPropertyToAllContactData(customProperty: UserServicePseudoProperty): UserServicePseudoProperty {
         val property = customPropertyAdapter.createCustomProperty(customProperty)
-        contactDataService.addCustomPropertyToAllContactData(property)
+        userInfoService.addCustomPropertyToAllContactData(property)
         return property
     }
 
@@ -51,7 +51,7 @@ class PseudoPropertyService(
         val updated = customPropertyAdapter.renameCustomProperty(entity, key, newKey)
         when (entity) {
             User::class.simpleName -> userAdapterPostgresql.renameCustomPropertyForAllUsers(key, newKey)
-            UserInfo::class.simpleName -> contactDataService.renameCustomPropertyForAllContactData(key, newKey)
+            UserInfo::class.simpleName -> userInfoService.renameCustomPropertyForAllContactData(key, newKey)
         }
         return updated
     }

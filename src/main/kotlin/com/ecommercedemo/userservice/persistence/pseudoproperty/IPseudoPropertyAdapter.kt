@@ -1,8 +1,8 @@
-package com.ecommercedemo.userservice.persistence.customProperty
+package com.ecommercedemo.userservice.persistence.pseudoproperty
 
 import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 
-interface ICustomPropertyAdapter {
+interface IPseudoPropertyAdapter {
     fun save(property: UserServicePseudoProperty): UserServicePseudoProperty
     fun getAllUserCustomProperties(): List<UserServicePseudoProperty>
     fun existsByEntityAndKey(entity: String, key: String): Boolean

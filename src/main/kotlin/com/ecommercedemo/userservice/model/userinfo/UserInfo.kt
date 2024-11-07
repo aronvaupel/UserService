@@ -1,4 +1,4 @@
-package com.ecommercedemo.userservice.model.contactdata
+package com.ecommercedemo.userservice.model.userinfo
 
 import com.ecommercedemo.common.kafka.ChangedProperty
 import com.ecommercedemo.common.model.BaseEntity
@@ -56,7 +56,7 @@ open class UserInfo(
 ) : BaseEntity() {
 
     companion object {
-        const val STORAGE_NAME = "contact_data"
+        const val STORAGE_NAME = "user_info"
     }
 
     fun getChangedProperties(): List<ChangedProperty> {

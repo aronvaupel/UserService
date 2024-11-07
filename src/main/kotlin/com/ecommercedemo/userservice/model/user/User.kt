@@ -7,7 +7,7 @@ import com.ecommercedemo.common.validation.password.PasswordValidator
 import com.ecommercedemo.common.validation.password.ValidPassword
 import com.ecommercedemo.common.validation.userrole.UserRole
 import com.ecommercedemo.userservice.dto.user.UserDto
-import com.ecommercedemo.userservice.model.contactdata.UserInfo
+import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size

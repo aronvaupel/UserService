@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size
 data class RegisterUserDto(
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
-    val userName: String,
+    val username: String,
     @field:ValidPassword
     val password: String,
     @field:ValidName

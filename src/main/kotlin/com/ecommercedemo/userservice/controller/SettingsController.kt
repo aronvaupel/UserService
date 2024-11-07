@@ -1,9 +1,9 @@
 package com.ecommercedemo.userservice.controller
 
 import com.ecommercedemo.common.model.CustomProperty
-import com.ecommercedemo.userservice.model.contactdata.UserInfo
 import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.model.user.User
+import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import com.ecommercedemo.userservice.service.pseudoproperty.PseudoPropertyService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
