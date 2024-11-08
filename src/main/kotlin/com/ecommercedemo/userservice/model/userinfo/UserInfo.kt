@@ -1,6 +1,5 @@
 package com.ecommercedemo.userservice.model.userinfo
 
-import com.ecommercedemo.common.kafka.ChangedProperty
 import com.ecommercedemo.common.model.BaseEntity
 import com.ecommercedemo.common.validation.country.Country
 import com.ecommercedemo.common.validation.email.ValidEmail
@@ -8,6 +7,7 @@ import com.ecommercedemo.common.validation.name.ValidName
 import com.ecommercedemo.common.validation.phone.ValidPhone
 import com.ecommercedemo.common.validation.specialcharacters.ExcludeSpecialCharacters
 import com.ecommercedemo.userservice.model.user.User
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -52,29 +52,12 @@ open class UserInfo(
 
     @OneToOne(mappedBy = "userInfo")
     @NotNull
+    @JsonIgnore
     open val user: User? = null
 ) : BaseEntity() {
 
     companion object {
         const val STORAGE_NAME = "user_info"
-    }
-
-    fun getChangedProperties(): List<ChangedProperty> {
-        val properties = mutableListOf<ChangedProperty>()
-        properties.add(ChangedProperty("id", id))
-        properties.add(ChangedProperty("createdAt", createdAt))
-        properties.add(ChangedProperty("updatedAt", updatedAt))
-        properties.add(ChangedProperty("firstName", firstName))
-        properties.add(ChangedProperty("lastName", lastName))
-        properties.add(ChangedProperty("email", email))
-        phoneNumber?.let { properties.add(ChangedProperty("phoneNumber", it)) }
-        street?.let { properties.add(ChangedProperty("street", it)) }
-        houseNumber?.let { properties.add(ChangedProperty("houseNumber", it)) }
-        additionalAddressInfo?.let { properties.add(ChangedProperty("additionalAddressInfo", it)) }
-        zipCode?.let { properties.add(ChangedProperty("zipCode", it)) }
-        city?.let { properties.add(ChangedProperty("city", it)) }
-        country?.let { properties.add(ChangedProperty("country", it)) }
-        return properties
     }
 
 }

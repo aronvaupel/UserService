@@ -14,7 +14,7 @@ class PseudoPropertyAdapterPostgresql(
         return pseudoPropertyRepository.save(property)
     }
 
-    override fun getAllUserCustomProperties(): List<UserServicePseudoProperty> {
+    override fun getAllUserPseudoProperties(): List<UserServicePseudoProperty> {
         return pseudoPropertyRepository.getAllByEntityClassName(User::class.simpleName!!)
     }
 
@@ -22,30 +22,30 @@ class PseudoPropertyAdapterPostgresql(
         return pseudoPropertyRepository.existsByEntityClassNameAndKey(entity, key)
     }
 
-    override fun getAllContactDataCustomProperties(): List<UserServicePseudoProperty> {
+    override fun getAllUserInfoPseudoProperties(): List<UserServicePseudoProperty> {
         return pseudoPropertyRepository.getAllByEntityClassName(UserInfo::class.simpleName!!)
     }
 
-    override fun getUserCustomPropertyByKey(key: String): UserServicePseudoProperty? {
+    override fun getUserPseudoPropertyByKey(key: String): UserServicePseudoProperty? {
         return pseudoPropertyRepository.getByEntityClassNameAndKey(User::class.simpleName!!, key)
     }
 
-    override fun getContactDataCustomPropertyByKey(key: String): UserServicePseudoProperty? {
+    override fun getUserInfoPseudoPropertyByKey(key: String): UserServicePseudoProperty? {
         return pseudoPropertyRepository.getByEntityClassNameAndKey(UserInfo::class.simpleName!!, key)
     }
 
-    override fun deleteCustomPropertyByEntityAndKey(entity: String, key: String) {
+    override fun deletePseudoPropertyByEntityAndKey(entity: String, key: String) {
         pseudoPropertyRepository.deleteByEntityClassNameAndKey(entity, key)
     }
 
-    override fun createCustomProperty(property: UserServicePseudoProperty): UserServicePseudoProperty {
+    override fun createPseudoProperty(property: UserServicePseudoProperty): UserServicePseudoProperty {
         pseudoPropertyRepository.getByEntityClassNameAndKey(property.entityClassName, property.key)?.let {
             throw IllegalArgumentException("Property with key ${property.key} already exists for entity ${property.entityClassName}")
         }
         return pseudoPropertyRepository.save(property)
     }
 
-    override fun renameCustomProperty(entity: String, key: String, newKey: String) : UserServicePseudoProperty {
+    override fun renamePseudoProperty(entity: String, key: String, newKey: String) : UserServicePseudoProperty {
         if (pseudoPropertyRepository.existsByEntityClassNameAndKey(entity, newKey))
             throw IllegalArgumentException("Property with key $newKey already exists for entity $entity")
         return pseudoPropertyRepository.getByEntityClassNameAndKey(entity, key)?.let {

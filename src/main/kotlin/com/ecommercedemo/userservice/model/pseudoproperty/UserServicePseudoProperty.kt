@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.model.pseudoproperty
 
-import com.ecommercedemo.common.model.CustomProperty
+import com.ecommercedemo.common.model.PseudoProperty
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
@@ -10,8 +10,8 @@ import jakarta.persistence.UniqueConstraint
     name = UserServicePseudoProperty.STORAGE_NAME,
     uniqueConstraints = [UniqueConstraint(columnNames = ["entityClassName", "key"])]
 )
-open class UserServicePseudoProperty: CustomProperty() {
+open class UserServicePseudoProperty: PseudoProperty() {
     companion object {
-        const val STORAGE_NAME = "custom_properties"
+        const val STORAGE_NAME = "pseudo_properties"
     }
 }

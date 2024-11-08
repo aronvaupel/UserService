@@ -1,7 +1,7 @@
 package com.ecommercedemo.userservice.persistence.user
 
-import com.ecommercedemo.common.model.CustomProperty
-import com.ecommercedemo.common.model.embedded.CustomPropertyData
+import com.ecommercedemo.common.model.PseudoProperty
+import com.ecommercedemo.common.model.embedded.PseudoPropertyData
 import com.ecommercedemo.userservice.model.user.User
 import org.springframework.stereotype.Service
 import java.util.*
@@ -23,10 +23,6 @@ class UserAdapterPostgresql(
         return userRepository.findById(id).orElseThrow()
     }
 
-    override fun updateUser(id: UUID): User {
-        return userRepository.findById(id).orElseThrow()
-    }
-
     override fun deleteUser(id: UUID) {
         userRepository.deleteById(id)
     }
@@ -39,12 +35,12 @@ class UserAdapterPostgresql(
         return userRepository.findAllById(ids)
     }
 
-    override fun addCustomPropertyToAllUsers(property: CustomProperty) {
+    override fun addPseudoPropertyToAllUsers(property: PseudoProperty) {
         val users = userRepository.findAll()
         users.forEach { user ->
-            val exists = user.customProperties.any { it.key == property.key }
+            val exists = user.pseudoProperties.any { it.key == property.key }
             if (exists) throw IllegalArgumentException("Property with key ${property.key} already exists")
-            user.customProperties.add(CustomPropertyData.serialize(
+            user.pseudoProperties.add(PseudoPropertyData.serialize(
                 entity = User::class.simpleName!!,
                 key = property.key,
                 value = null
@@ -53,24 +49,24 @@ class UserAdapterPostgresql(
         }
     }
 
-    override fun removeCustomPropertyFromAllUsers(property: CustomProperty) {
+    override fun removePseudoPropertyFromAllUsers(property: PseudoProperty) {
         val users = userRepository.findAll()
-        val exists = users.any { user -> user.customProperties.any { it.key == property.key } }
+        val exists = users.any { user -> user.pseudoProperties.any { it.key == property.key } }
         if (!exists) throw IllegalArgumentException("Property with key ${property.key} does not exist")
         users.forEach { user ->
-            user.customProperties.removeIf { it.key == property.key }
+            user.pseudoProperties.removeIf { it.key == property.key }
             userRepository.save(user)
         }
     }
 
-    override fun renameCustomPropertyForAllUsers(key: String, newKey: String)  {
+    override fun renamePseudoPropertyForAllUsers(key: String, newKey: String)  {
         val users = userRepository.findAll()
-        val exists = users.any { user -> user.customProperties.any { it.key == key } }
+        val exists = users.any { user -> user.pseudoProperties.any { it.key == key } }
         if (!exists) throw IllegalArgumentException("Property with key $key does not exist")
-        val newKeyExists = users.any { user -> user.customProperties.any { it.key == newKey } }
+        val newKeyExists = users.any { user -> user.pseudoProperties.any { it.key == newKey } }
         if (newKeyExists) throw IllegalArgumentException("Property with key $newKey already exists")
         users.forEach { user ->
-            user.customProperties.forEach {
+            user.pseudoProperties.forEach {
                 if (it.key == key) {
                     it.key = newKey
                 }

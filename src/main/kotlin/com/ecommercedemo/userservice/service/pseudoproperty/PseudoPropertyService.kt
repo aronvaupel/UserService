@@ -12,51 +12,51 @@ import org.springframework.stereotype.Service
 class PseudoPropertyService(
     private val userInfoService: UserInfoService,
     private val userAdapterPostgresql: UserAdapterPostgresql,
-    private val customPropertyAdapter: IPseudoPropertyAdapter,
+    private val pseudoPropertyAdapter: IPseudoPropertyAdapter,
 ) {
-    fun getAllUserCustomProperties(): List<UserServicePseudoProperty> {
-        return customPropertyAdapter.getAllUserCustomProperties()
+    fun getAllUserPseudoProperties(): List<UserServicePseudoProperty> {
+        return pseudoPropertyAdapter.getAllUserPseudoProperties()
     }
 
-    fun getAllContactDataCustomProperties(): List<UserServicePseudoProperty> {
-        return customPropertyAdapter.getAllContactDataCustomProperties()
+    fun getAllUserInfoPseudoProperties(): List<UserServicePseudoProperty> {
+        return pseudoPropertyAdapter.getAllUserInfoPseudoProperties()
     }
 
-    fun getUserCustomPropertyByKey(key: String): UserServicePseudoProperty? {
-        return customPropertyAdapter.getUserCustomPropertyByKey(key)
+    fun getUserPseudoPropertyByKey(key: String): UserServicePseudoProperty? {
+        return pseudoPropertyAdapter.getUserPseudoPropertyByKey(key)
     }
 
-    fun getContactDataCustomPropertyByKey(key: String): UserServicePseudoProperty? {
-        return customPropertyAdapter.getContactDataCustomPropertyByKey(key)
+    fun getUserInfoPseudoPropertyByKey(key: String): UserServicePseudoProperty? {
+        return pseudoPropertyAdapter.getUserInfoPseudoPropertyByKey(key)
     }
 
-    fun deleteCustomPropertyByEntityAndKey(entity: String, key: String) {
-        customPropertyAdapter.deleteCustomPropertyByEntityAndKey(entity, key)
+    fun deletePseudoPropertyByEntityAndKey(entity: String, key: String) {
+        pseudoPropertyAdapter.deletePseudoPropertyByEntityAndKey(entity, key)
     }
 
-    fun addCustomPropertyToAllUsers(customProperty: UserServicePseudoProperty): UserServicePseudoProperty {
-        val property = customPropertyAdapter.createCustomProperty(customProperty)
-        userAdapterPostgresql.addCustomPropertyToAllUsers(property)
+    fun addPseudoPropertyToAllUsers(pseudoProperty: UserServicePseudoProperty): UserServicePseudoProperty {
+        val property = pseudoPropertyAdapter.createPseudoProperty(pseudoProperty)
+        userAdapterPostgresql.addPseudoPropertyToAllUsers(property)
         return property
     }
 
 
-    fun addCustomPropertyToAllContactData(customProperty: UserServicePseudoProperty): UserServicePseudoProperty {
-        val property = customPropertyAdapter.createCustomProperty(customProperty)
-        userInfoService.addCustomPropertyToAllContactData(property)
+    fun addPseudoPropertyToAllUserInfo(pseudoProperty: UserServicePseudoProperty): UserServicePseudoProperty {
+        val property = pseudoPropertyAdapter.createPseudoProperty(pseudoProperty)
+        userInfoService.addPseudoPropertyToAllUserInfo(property)
         return property
     }
 
-    fun renameCustomProperty(entity: String, key: String, newKey: String) : UserServicePseudoProperty {
-        val updated = customPropertyAdapter.renameCustomProperty(entity, key, newKey)
+    fun renamePseudoProperty(entity: String, key: String, newKey: String) : UserServicePseudoProperty {
+        val updated = pseudoPropertyAdapter.renamePseudoProperty(entity, key, newKey)
         when (entity) {
-            User::class.simpleName -> userAdapterPostgresql.renameCustomPropertyForAllUsers(key, newKey)
-            UserInfo::class.simpleName -> userInfoService.renameCustomPropertyForAllContactData(key, newKey)
+            User::class.simpleName -> userAdapterPostgresql.renamePseudoPropertyForAllUsers(key, newKey)
+            UserInfo::class.simpleName -> userInfoService.renamePseudoPropertyForAllUserInfo(key, newKey)
         }
         return updated
     }
 
     fun existsByEntityAndKey(entity: String, key: String): Boolean {
-        return customPropertyAdapter.existsByEntityAndKey(entity, key)
+        return pseudoPropertyAdapter.existsByEntityAndKey(entity, key)
     }
 }

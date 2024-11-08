@@ -2,11 +2,13 @@ package com.ecommercedemo.userservice.service.user
 
 import com.ecommercedemo.common.kafka.EntityEventProducer
 import com.ecommercedemo.common.kafka.EntityEventType
-import com.ecommercedemo.common.model.CustomProperty
+import com.ecommercedemo.common.model.PseudoProperty
 import com.ecommercedemo.common.security.EnvConfig
+import com.ecommercedemo.common.util.EntityChangeTracker
 import com.ecommercedemo.common.validation.userrole.UserRole
-import com.ecommercedemo.userservice.dto.user.RegisterUserDto
-import com.ecommercedemo.userservice.dto.user.UserDto
+import com.ecommercedemo.userservice.dto.user.UserRegisterDto
+import com.ecommercedemo.userservice.dto.user.UserResponseDto
+import com.ecommercedemo.userservice.dto.user.UserUpdateDto
 import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
@@ -25,7 +27,7 @@ import java.util.concurrent.TimeUnit
 
 @Service
 class UserService(
-    private val contactDataAdapter: IUserInfoAdapter,
+    private val userInfoAdapter: IUserInfoAdapter,
     envConfig: EnvConfig,
     private val eventProducer: EntityEventProducer,
     private val redisTemplate: RedisTemplate<String, Any>,
@@ -39,12 +41,36 @@ class UserService(
 
     fun getUser(id: UUID) = userAdapter.getUserById(id)
     fun saveUser(user: User) = userAdapter.saveUser(user)
-    fun updateUser(user: User) = userAdapter.updateUser(user.id)
-    fun deleteUser(id: UUID) = userAdapter.deleteUser(id)
+
+    fun updateUser(dto: UserUpdateDto): UserResponseDto {
+        val user = getUser(dto.id)
+        val updatedUser = user.copy(
+            username = dto.username ?: user.username,
+        ).apply {
+            if (dto.password != null) {
+                password = dto.password
+            }
+        }
+        val changes =
+            EntityChangeTracker<User>().getChangedProperties(user, updatedUser).filterKeys { it != "_password" }
+                .toMutableMap()
+
+        saveUser(updatedUser)
+        eventProducer.emit(
+            User::class.java, updatedUser.id, EntityEventType.UPDATE, changes
+        )
+        return updatedUser.toDto()
+    }
+
+    fun deleteUser(id: UUID) {
+        userAdapter.deleteUser(id)
+        eventProducer.emit(User::class.java, id, EntityEventType.DELETE, mutableMapOf())
+    }
+
     fun getUserByUsername(username: String) = userAdapter.getUserByUsername(username)
     fun getUsers(ids: List<UUID>) = userAdapter.getUsers(ids)
 
-    fun registerGuest(): UserDto {
+    fun registerGuest(): UserResponseDto {
         val guest = userAdapter.saveUser(
             User(
                 username = "guest_${System.currentTimeMillis()}",
@@ -57,7 +83,7 @@ class UserService(
         return guest
     }
 
-    fun registerUser(dto: RegisterUserDto): UserDto {
+    fun registerUser(dto: UserRegisterDto): UserResponseDto {
         if (!emailIsUnique(dto.email)) {
             throw IllegalArgumentException("Email already exists")
         }
@@ -67,25 +93,29 @@ class UserService(
             lastName = dto.lastName,
         )
         val user = User(
-                username = dto.username,
-                _password = "",
-                userRole = UserRole.REGISTERED_USER,
-                userInfo = userInfo,
-            )
+            username = dto.username,
+            _password = "",
+            userRole = UserRole.REGISTERED_USER,
+            userInfo = userInfo,
+        )
         user.password = dto.password
+        val changes =
+            EntityChangeTracker<User>().getChangedProperties(null, user).filterKeys { it != "_password" }
+                .toMutableMap()
+
         userAdapter.saveUser(user)
 
         eventProducer.emit(
             User::class.java,
             user.id,
             EntityEventType.CREATE,
-            user.getChangedProperties()
+            changes
         )
         eventProducer.emit(
             UserInfo::class.java,
             userInfo.id,
             EntityEventType.CREATE,
-            userInfo.getChangedProperties()
+            EntityChangeTracker<UserInfo>().getChangedProperties(null, userInfo)
         )
         return user.toDto()
     }
@@ -96,7 +126,7 @@ class UserService(
         println("Importing users from Excel file")
     }
 
-    fun exportUsersToExcel(filter: String?, contactDataProperties: List<String>?): ByteArray {
+    fun exportUsersToExcel(filter: String?, userInfoProperties: List<String>?): ByteArray {
         // Implement the logic to export users to an Excel file
         // This is a placeholder implementation
         println("Exporting users to Excel file")
@@ -111,7 +141,7 @@ class UserService(
     }
 
     fun emailIsUnique(email: String): Boolean {
-        return !contactDataAdapter.existsByMail(email)
+        return !userInfoAdapter.existsByMail(email)
     }
 
     fun updateLastActivity(userId: UUID, lastActivityTimestamp: Long) {
@@ -165,14 +195,13 @@ class UserService(
         saveUser(user)
     }
 
-    fun addCustomPropertyToAllUsers(customProperty: UserServicePseudoProperty) : CustomProperty {
-        userAdapter.addCustomPropertyToAllUsers(customProperty)
-        return customProperty
+    fun addPseudoPropertyToAllUsers(pseudoProperty: UserServicePseudoProperty): PseudoProperty {
+        userAdapter.addPseudoPropertyToAllUsers(pseudoProperty)
+        return pseudoProperty
     }
 
-    fun renameCustomPropertyForAllUsers(key: String, newKey: String)  {
-        return userAdapter.renameCustomPropertyForAllUsers(key, newKey)
+    fun renamePseudoPropertyForAllUsers(key: String, newKey: String) {
+        return userAdapter.renamePseudoPropertyForAllUsers(key, newKey)
     }
-
 
 }

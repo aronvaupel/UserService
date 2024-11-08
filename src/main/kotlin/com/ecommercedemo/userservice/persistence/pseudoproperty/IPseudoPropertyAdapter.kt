@@ -4,12 +4,12 @@ import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoPrope
 
 interface IPseudoPropertyAdapter {
     fun save(property: UserServicePseudoProperty): UserServicePseudoProperty
-    fun getAllUserCustomProperties(): List<UserServicePseudoProperty>
+    fun getAllUserPseudoProperties(): List<UserServicePseudoProperty>
     fun existsByEntityAndKey(entity: String, key: String): Boolean
-    fun getAllContactDataCustomProperties(): List<UserServicePseudoProperty>
-    fun getUserCustomPropertyByKey(key: String): UserServicePseudoProperty?
-    fun getContactDataCustomPropertyByKey(key: String): UserServicePseudoProperty?
-    fun deleteCustomPropertyByEntityAndKey(entity: String, key: String)
-    fun createCustomProperty(property: UserServicePseudoProperty): UserServicePseudoProperty
-    fun renameCustomProperty(entity: String, key: String, newKey: String): UserServicePseudoProperty
+    fun getAllUserInfoPseudoProperties(): List<UserServicePseudoProperty>
+    fun getUserPseudoPropertyByKey(key: String): UserServicePseudoProperty?
+    fun getUserInfoPseudoPropertyByKey(key: String): UserServicePseudoProperty?
+    fun deletePseudoPropertyByEntityAndKey(entity: String, key: String)
+    fun createPseudoProperty(property: UserServicePseudoProperty): UserServicePseudoProperty
+    fun renamePseudoProperty(entity: String, key: String, newKey: String): UserServicePseudoProperty
 }

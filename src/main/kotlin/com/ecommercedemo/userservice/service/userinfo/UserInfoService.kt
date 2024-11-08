@@ -8,34 +8,34 @@ import java.util.*
 
 @Service
 class UserInfoService(
-    private val contactDataAdapter: IUserInfoAdapter
+    private val userInfoAdapter: IUserInfoAdapter
 ) {
-    fun getAllContactData(): List<UserInfo> {
-        return contactDataAdapter.getAllUserInfo()
+    fun getAllUserInfo(): List<UserInfo> {
+        return userInfoAdapter.getAllUserInfo()
     }
 
-    fun getContactDataByUserId(id: UUID): UserInfo? {
-        return contactDataAdapter.getUserInfoByUserId(id)
+    fun getUserInfoByUserId(id: UUID): UserInfo? {
+        return userInfoAdapter.getUserInfoByUserId(id)
     }
 
-    fun saveContactData(data: UserInfo): UserInfo {
-        return contactDataAdapter.saveUserInfo(data)
+    fun saveUserInfo(data: UserInfo): UserInfo {
+        return userInfoAdapter.saveUserInfo(data)
     }
 
-    fun updateContactDataByUserId(id: UUID, data: UserInfo): UserInfo? {
-        return contactDataAdapter.updateUserInfoByUserId(id, data)
+    fun updateUserInfoByUserId(id: UUID, data: UserInfo): UserInfo? {
+        return userInfoAdapter.updateUserInfoByUserId(id, data)
     }
 
-    fun deleteContactDataByUserId(id: UUID) {
-        contactDataAdapter.deleteUserInfoByUserId(id)
+    fun deleteUserInfoByUserId(id: UUID) {
+        userInfoAdapter.deleteUserInfoByUserId(id)
     }
 
-    fun addCustomPropertyToAllContactData(customProperty: UserServicePseudoProperty): UserServicePseudoProperty {
-        contactDataAdapter.addCustomPropertyToAllUserInfo(customProperty)
-        return customProperty
+    fun addPseudoPropertyToAllUserInfo(pseudoProperty: UserServicePseudoProperty): UserServicePseudoProperty {
+        userInfoAdapter.addPseudoPropertyToAllUserInfo(pseudoProperty)
+        return pseudoProperty
     }
 
-    fun renameCustomPropertyForAllContactData(key: String, newKey: String) {
-        contactDataAdapter.renameCustomPropertyForAllUserInfo(key, newKey)
+    fun renamePseudoPropertyForAllUserInfo(key: String, newKey: String) {
+        userInfoAdapter.renamePseudoPropertyForAllUserInfo(key, newKey)
     }
 }
