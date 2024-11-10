@@ -2,12 +2,15 @@ package com.ecommercedemo.userservice.persistence.user
 
 import com.ecommercedemo.common.model.PseudoProperty
 import com.ecommercedemo.common.model.embedded.PseudoPropertyData
+import com.ecommercedemo.common.util.filter.QueryBuilder
+import com.ecommercedemo.common.util.filter.QueryParams
 import com.ecommercedemo.userservice.model.user.User
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserAdapterPostgresql(
+    private val queryBuilder: QueryBuilder<User>,
     private val userRepository: UserRepository,
 ) : IUserAdapter {
 
@@ -31,8 +34,8 @@ class UserAdapterPostgresql(
         return userRepository.findByUsername(username)
     }
 
-    override fun getUsers(ids: List<UUID>): List<User> {
-        return userRepository.findAllById(ids)
+    override fun getUsers(queryParams: QueryParams<User>): List<User> {
+        return queryBuilder.buildQuery(User::class, queryParams)
     }
 
     override fun addPseudoPropertyToAllUsers(property: PseudoProperty) {

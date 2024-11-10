@@ -5,6 +5,7 @@ import com.ecommercedemo.common.kafka.EntityEventType
 import com.ecommercedemo.common.model.PseudoProperty
 import com.ecommercedemo.common.security.EnvConfig
 import com.ecommercedemo.common.util.EntityChangeTracker
+import com.ecommercedemo.common.util.filter.QueryParams
 import com.ecommercedemo.common.validation.userrole.UserRole
 import com.ecommercedemo.userservice.dto.user.UserRegisterDto
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
@@ -27,10 +28,10 @@ import java.util.concurrent.TimeUnit
 
 @Service
 class UserService(
-    private val userInfoAdapter: IUserInfoAdapter,
     envConfig: EnvConfig,
     private val eventProducer: EntityEventProducer,
     private val redisTemplate: RedisTemplate<String, Any>,
+    private val userInfoAdapter: IUserInfoAdapter,
     private val userAdapter: IUserAdapter,
 ) {
 
@@ -68,7 +69,10 @@ class UserService(
     }
 
     fun getUserByUsername(username: String) = userAdapter.getUserByUsername(username)
-    fun getUsers(ids: List<UUID>) = userAdapter.getUsers(ids)
+
+    fun getUsers(queryParams: QueryParams<User>): List<User> {
+        return userAdapter.getUsers(queryParams)
+    }
 
     fun registerGuest(): UserResponseDto {
         val guest = userAdapter.saveUser(

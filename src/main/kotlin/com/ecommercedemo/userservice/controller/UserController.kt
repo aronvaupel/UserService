@@ -1,5 +1,6 @@
 package com.ecommercedemo.userservice.controller
 
+import com.ecommercedemo.common.util.filter.QueryParams
 import com.ecommercedemo.userservice.dto.user.UserRegisterDto
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
 import com.ecommercedemo.userservice.dto.user.UserUpdateDto
@@ -18,13 +19,11 @@ import java.util.*
 class UserController(
     private val userService: UserService
 ) {
-
     @GetMapping
     fun getUsers(
-        @RequestParam(required = true) ids: List<UUID>,
+        @RequestBody queryParams: QueryParams<User>
     ): ResponseEntity<List<User>> {
-        val users = userService.getUsers(ids)
-        return ResponseEntity.ok(users)
+        return ResponseEntity.ok(userService.getUsers(queryParams))
     }
 
     @GetMapping("/{id}")
