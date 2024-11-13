@@ -1,7 +1,6 @@
 package com.ecommercedemo.userservice.model.user
 
 import com.ecommercedemo.common.model.BaseEntity
-import com.ecommercedemo.common.model.embedded.PseudoPropertyData
 import com.ecommercedemo.common.validation.password.PasswordCrypto
 import com.ecommercedemo.common.validation.password.PasswordValidator
 import com.ecommercedemo.common.validation.password.ValidPassword
@@ -68,7 +67,7 @@ open class User(
         lastActive: LocalDateTime = this.lastActive,
         createdAt: LocalDateTime = this.createdAt,
         updatedAt: LocalDateTime = this.updatedAt,
-        pseudoProperties: MutableSet<PseudoPropertyData> = this.pseudoProperties.toMutableSet()
+        pseudoProperties: Map<String, Any> = this.pseudoProperties
     ): User {
         val copiedUser = User(
             id = id,
@@ -80,7 +79,7 @@ open class User(
         )
         copiedUser.createdAt = createdAt
         copiedUser.updatedAt = updatedAt
-        copiedUser.pseudoProperties = pseudoProperties
+        copiedUser.pseudoProperties = pseudoProperties as MutableMap<String, Any>
         return copiedUser
     }
 

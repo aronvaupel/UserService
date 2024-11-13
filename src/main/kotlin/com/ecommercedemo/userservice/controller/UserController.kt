@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.controller
 
-import com.ecommercedemo.common.util.filter.QueryParams
+import com.ecommercedemo.common.util.search.dto.SearchRequest
 import com.ecommercedemo.userservice.dto.user.UserRegisterDto
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
 import com.ecommercedemo.userservice.dto.user.UserUpdateDto
@@ -21,9 +21,10 @@ class UserController(
 ) {
     @GetMapping
     fun getUsers(
-        @RequestBody queryParams: QueryParams<User>
+        @RequestBody searchRequest: SearchRequest
     ): ResponseEntity<List<User>> {
-        return ResponseEntity.ok(userService.getUsers(queryParams))
+        println("Request: $searchRequest")
+        return ResponseEntity.ok(userService.getUsers(searchRequest))
     }
 
     @GetMapping("/{id}")

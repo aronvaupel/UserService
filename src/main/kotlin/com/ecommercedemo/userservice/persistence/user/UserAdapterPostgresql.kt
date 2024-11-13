@@ -1,16 +1,15 @@
 package com.ecommercedemo.userservice.persistence.user
 
 import com.ecommercedemo.common.model.PseudoProperty
-import com.ecommercedemo.common.model.embedded.PseudoPropertyData
-import com.ecommercedemo.common.util.filter.QueryBuilder
-import com.ecommercedemo.common.util.filter.QueryParams
+import com.ecommercedemo.common.util.search.Retriever
+import com.ecommercedemo.common.util.search.dto.SearchRequest
 import com.ecommercedemo.userservice.model.user.User
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserAdapterPostgresql(
-    private val queryBuilder: QueryBuilder<User>,
+    private val retriever: Retriever,
     private val userRepository: UserRepository,
 ) : IUserAdapter {
 
@@ -34,8 +33,8 @@ class UserAdapterPostgresql(
         return userRepository.findByUsername(username)
     }
 
-    override fun getUsers(queryParams: QueryParams<User>): List<User> {
-        return queryBuilder.buildQuery(User::class, queryParams)
+    override fun getUsers(searchRequest: SearchRequest): List<User> {
+        return retriever.executeSearch(searchRequest, User::class)
     }
 
     override fun addPseudoPropertyToAllUsers(property: PseudoProperty) {
@@ -43,11 +42,7 @@ class UserAdapterPostgresql(
         users.forEach { user ->
             val exists = user.pseudoProperties.any { it.key == property.key }
             if (exists) throw IllegalArgumentException("Property with key ${property.key} already exists")
-            user.pseudoProperties.add(PseudoPropertyData.serialize(
-                entity = User::class.simpleName!!,
-                key = property.key,
-                value = null
-            ))
+            user.pseudoProperties[property.key] = property.value as Any
             userRepository.save(user)
         }
     }
@@ -57,7 +52,7 @@ class UserAdapterPostgresql(
         val exists = users.any { user -> user.pseudoProperties.any { it.key == property.key } }
         if (!exists) throw IllegalArgumentException("Property with key ${property.key} does not exist")
         users.forEach { user ->
-            user.pseudoProperties.removeIf { it.key == property.key }
+            user.pseudoProperties.remove(property.key)
             userRepository.save(user)
         }
     }
@@ -69,10 +64,8 @@ class UserAdapterPostgresql(
         val newKeyExists = users.any { user -> user.pseudoProperties.any { it.key == newKey } }
         if (newKeyExists) throw IllegalArgumentException("Property with key $newKey already exists")
         users.forEach { user ->
-            user.pseudoProperties.forEach {
-                if (it.key == key) {
-                    it.key = newKey
-                }
+            if (user.pseudoProperties.containsKey(key)) {
+                user.pseudoProperties[newKey] = user.pseudoProperties.remove(key)!!
             }
             userRepository.save(user)
         }

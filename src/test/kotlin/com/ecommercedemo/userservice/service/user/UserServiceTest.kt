@@ -24,9 +24,12 @@ class UserServiceTest {
     private val userAdapter: IUserAdapter = mock(IUserAdapter::class.java)
     private val userInfoAdapter: IUserInfoAdapter = mock(IUserInfoAdapter::class.java)
     private val eventProducer: EntityEventProducer = mock(EntityEventProducer::class.java)
+
     @Suppress("UNCHECKED_CAST")
-    private val redisTemplate: RedisTemplate<String, Any> = mock(RedisTemplate::class.java) as RedisTemplate<String, Any>
-    private val userService = UserService(userInfoAdapter, mock(EnvConfig::class.java), eventProducer, redisTemplate, userAdapter)
+    private val redisTemplate: RedisTemplate<String, Any> =
+        mock(RedisTemplate::class.java) as RedisTemplate<String, Any>
+    private val userService =
+        UserService(mock(EnvConfig::class.java), eventProducer, redisTemplate, userInfoAdapter, userAdapter)
 
     @Test
     fun `registerUser should throw exception if email is not unique`() {
@@ -53,6 +56,9 @@ class UserServiceTest {
         verify(userAdapter).saveUser(userCaptor.capture())
 
         val capturedUser = userCaptor.firstValue
+        val userChanges = EntityChangeTracker<User>().getChangedProperties(null, capturedUser)
+            .filterKeys { it != "_password" }
+            .toMutableMap()
         assertEquals(userRegisterDto.username, capturedUser.username)
         assertEquals(UserRole.REGISTERED_USER, capturedUser.userRole)
         assertEquals(userRegisterDto.email, capturedUser.userInfo?.email)
@@ -62,12 +68,14 @@ class UserServiceTest {
             User::class.java,
             capturedUser.id,
             EntityEventType.CREATE,
-            EntityChangeTracker<User>().getChangedProperties(null, capturedUser))
+            userChanges
+        )
         verify(eventProducer).emit(
             UserInfo::class.java,
             capturedUser.userInfo!!.id,
             EntityEventType.CREATE,
-            EntityChangeTracker<UserInfo>().getChangedProperties(null, capturedUser.userInfo!!))
+            EntityChangeTracker<UserInfo>().getChangedProperties(null, capturedUser.userInfo!!)
+        )
         assertEquals(capturedUser.toDto(), result)
     }
 }

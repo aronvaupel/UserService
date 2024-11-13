@@ -5,7 +5,7 @@ import com.ecommercedemo.common.kafka.EntityEventType
 import com.ecommercedemo.common.model.PseudoProperty
 import com.ecommercedemo.common.security.EnvConfig
 import com.ecommercedemo.common.util.EntityChangeTracker
-import com.ecommercedemo.common.util.filter.QueryParams
+import com.ecommercedemo.common.util.search.dto.SearchRequest
 import com.ecommercedemo.common.validation.userrole.UserRole
 import com.ecommercedemo.userservice.dto.user.UserRegisterDto
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
@@ -70,8 +70,8 @@ class UserService(
 
     fun getUserByUsername(username: String) = userAdapter.getUserByUsername(username)
 
-    fun getUsers(queryParams: QueryParams<User>): List<User> {
-        return userAdapter.getUsers(queryParams)
+    fun getUsers(searchRequest: SearchRequest): List<User> {
+        return userAdapter.getUsers(searchRequest)
     }
 
     fun registerGuest(): UserResponseDto {

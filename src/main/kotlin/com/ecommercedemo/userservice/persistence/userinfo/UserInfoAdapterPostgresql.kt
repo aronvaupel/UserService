@@ -1,7 +1,6 @@
 package com.ecommercedemo.userservice.persistence.userinfo
 
 import com.ecommercedemo.common.model.PseudoProperty
-import com.ecommercedemo.common.model.embedded.PseudoPropertyData
 import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import com.ecommercedemo.userservice.persistence.pseudoproperty.PseudoPropertyAdapterPostgresql
@@ -44,13 +43,7 @@ class UserInfoAdapterPostgresql(
         userInfo.forEach { data ->
             val exists = data.pseudoProperties.any { it.key == pseudoProperty.key }
             if (exists) throw IllegalArgumentException("Property with key ${pseudoProperty.key} already exists")
-            data.pseudoProperties.add(
-                PseudoPropertyData.serialize(
-                    entity = UserInfo::class.simpleName!!,
-                    key = pseudoProperty.key,
-                    value = null
-                )
-            )
+            data.pseudoProperties[pseudoProperty.key] = pseudoProperty.value as Any
             userInfoRepository.save(data)
         }
     }
@@ -60,7 +53,7 @@ class UserInfoAdapterPostgresql(
         if (!isPresent) throw IllegalArgumentException("Property with key ${property.key} does not exist")
         val userInfo = userInfoRepository.findAll()
         userInfo.forEach { data ->
-            data.pseudoProperties.removeIf { it.key == property.key }
+            data.pseudoProperties.remove(property.key)
             userInfoRepository.save(data)
         }
     }
@@ -72,12 +65,10 @@ class UserInfoAdapterPostgresql(
         val newKeyExists = allUserInfo.any { data -> data.pseudoProperties.any { it.key == newKey } }
         if (newKeyExists) throw IllegalArgumentException("Property with key $newKey already exists")
         allUserInfo.forEach { user ->
-            user.pseudoProperties.forEach {
-                if (it.key == key) {
-                    it.key = newKey
-                }
+            if (user.pseudoProperties.containsKey(key)) {
+                user.pseudoProperties[newKey] = user.pseudoProperties.remove(key)!!
+                userInfoRepository.save(user)
             }
-            userInfoRepository.save(user)
         }
     }
 }

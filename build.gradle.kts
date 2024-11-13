@@ -54,7 +54,7 @@ val isLocalProfile: Boolean = project.hasProperty("spring.profiles.active") && p
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.15.2")
-	implementation("com.github.aronvaupel:commons:1.5.2")
+	implementation("com.github.aronvaupel:commons:2.2.7")
 	testImplementation ("com.h2database:h2")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.8.3")
