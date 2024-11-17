@@ -1,6 +1,5 @@
 package com.ecommercedemo.userservice.service.userinfo
 
-import com.ecommercedemo.userservice.model.pseudoproperty.UserServicePseudoProperty
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import com.ecommercedemo.userservice.persistence.userinfo.IUserInfoAdapter
 import org.springframework.stereotype.Service
@@ -28,14 +27,5 @@ class UserInfoService(
 
     fun deleteUserInfoByUserId(id: UUID) {
         userInfoAdapter.deleteUserInfoByUserId(id)
-    }
-
-    fun addPseudoPropertyToAllUserInfo(pseudoProperty: UserServicePseudoProperty): UserServicePseudoProperty {
-        userInfoAdapter.addPseudoPropertyToAllUserInfo(pseudoProperty)
-        return pseudoProperty
-    }
-
-    fun renamePseudoPropertyForAllUserInfo(key: String, newKey: String) {
-        userInfoAdapter.renamePseudoPropertyForAllUserInfo(key, newKey)
     }
 }

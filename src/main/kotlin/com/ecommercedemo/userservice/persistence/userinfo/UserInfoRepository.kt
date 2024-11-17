@@ -10,8 +10,6 @@ import java.util.*
 
 @Suppress("FunctionName")
 interface UserInfoRepository : JpaRepository<UserInfo, UUID> {
-    fun getUserInfoByUser_Id(id: UUID): UserInfo
-
     @Modifying
     @Transactional
     @Query("UPDATE UserInfo u SET u = :data WHERE u.user.id = :id")

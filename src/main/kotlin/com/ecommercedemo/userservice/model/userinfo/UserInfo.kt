@@ -1,11 +1,11 @@
 package com.ecommercedemo.userservice.model.userinfo
 
-import com.ecommercedemo.common.model.BaseEntity
-import com.ecommercedemo.common.validation.country.Country
-import com.ecommercedemo.common.validation.email.ValidEmail
-import com.ecommercedemo.common.validation.name.ValidName
-import com.ecommercedemo.common.validation.phone.ValidPhone
-import com.ecommercedemo.common.validation.specialcharacters.ExcludeSpecialCharacters
+import com.ecommercedemo.common.application.validation.country.Country
+import com.ecommercedemo.common.application.validation.email.ValidEmail
+import com.ecommercedemo.common.application.validation.name.ValidName
+import com.ecommercedemo.common.application.validation.phone.ValidPhone
+import com.ecommercedemo.common.application.validation.specialcharacters.ExcludeSpecialCharacters
+import com.ecommercedemo.common.model.ExtendableBaseEntity
 import com.ecommercedemo.userservice.model.user.User
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
@@ -54,7 +54,7 @@ open class UserInfo(
     @NotNull
     @JsonIgnore
     open val user: User? = null
-) : BaseEntity() {
+) : ExtendableBaseEntity() {
 
     companion object {
         const val STORAGE_NAME = "user_info"

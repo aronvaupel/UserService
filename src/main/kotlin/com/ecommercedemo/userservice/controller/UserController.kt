@@ -1,6 +1,6 @@
 package com.ecommercedemo.userservice.controller
 
-import com.ecommercedemo.common.util.search.dto.SearchRequest
+import com.ecommercedemo.common.application.search.dto.SearchRequest
 import com.ecommercedemo.userservice.dto.user.UserRegisterDto
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
 import com.ecommercedemo.userservice.dto.user.UserUpdateDto

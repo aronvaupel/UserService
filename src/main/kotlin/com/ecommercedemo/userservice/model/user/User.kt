@@ -1,10 +1,10 @@
 package com.ecommercedemo.userservice.model.user
 
-import com.ecommercedemo.common.model.BaseEntity
-import com.ecommercedemo.common.validation.password.PasswordCrypto
-import com.ecommercedemo.common.validation.password.PasswordValidator
-import com.ecommercedemo.common.validation.password.ValidPassword
-import com.ecommercedemo.common.validation.userrole.UserRole
+import com.ecommercedemo.common.application.validation.password.PasswordCrypto
+import com.ecommercedemo.common.application.validation.password.PasswordValidator
+import com.ecommercedemo.common.application.validation.password.ValidPassword
+import com.ecommercedemo.common.application.validation.userrole.UserRole
+import com.ecommercedemo.common.model.ExtendableBaseEntity
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import jakarta.persistence.*
@@ -36,7 +36,7 @@ open class User(
 
     open var lastActive: LocalDateTime = LocalDateTime.now(),
 
-    ) : BaseEntity() {
+    ) : ExtendableBaseEntity() {
     companion object {
         const val STORAGE_NAME = "users"
     }
@@ -67,7 +67,7 @@ open class User(
         lastActive: LocalDateTime = this.lastActive,
         createdAt: LocalDateTime = this.createdAt,
         updatedAt: LocalDateTime = this.updatedAt,
-        pseudoProperties: Map<String, Any> = this.pseudoProperties
+        pseudoProperties: String = this.pseudoProperties
     ): User {
         val copiedUser = User(
             id = id,
@@ -79,7 +79,7 @@ open class User(
         )
         copiedUser.createdAt = createdAt
         copiedUser.updatedAt = updatedAt
-        copiedUser.pseudoProperties = pseudoProperties as MutableMap<String, Any>
+        copiedUser.pseudoProperties = pseudoProperties
         return copiedUser
     }
 

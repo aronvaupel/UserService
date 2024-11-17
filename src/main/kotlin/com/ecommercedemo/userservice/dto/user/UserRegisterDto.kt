@@ -1,8 +1,9 @@
 package com.ecommercedemo.userservice.dto.user
 
-import com.ecommercedemo.common.validation.email.ValidEmail
-import com.ecommercedemo.common.validation.name.ValidName
-import com.ecommercedemo.common.validation.password.ValidPassword
+
+import com.ecommercedemo.common.application.validation.email.ValidEmail
+import com.ecommercedemo.common.application.validation.name.ValidName
+import com.ecommercedemo.common.application.validation.password.ValidPassword
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
