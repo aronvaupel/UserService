@@ -1,62 +1,19 @@
 package com.ecommercedemo.userservice.controller
 
-import com.ecommercedemo.common.application.search.dto.SearchRequest
-import com.ecommercedemo.userservice.dto.user.UserRegisterDto
-import com.ecommercedemo.userservice.dto.user.UserResponseDto
-import com.ecommercedemo.userservice.dto.user.UserUpdateDto
+import com.ecommercedemo.common.controller.abstraction.RestControllerTemplate
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.service.user.UserService
-import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.util.*
 
 @RestController
 @RequestMapping("/users")
 @Validated
 class UserController(
     private val userService: UserService
-) {
-    @GetMapping
-    fun getUsers(
-        @RequestBody searchRequest: SearchRequest
-    ): ResponseEntity<List<User>> {
-        println("Request: $searchRequest")
-        return ResponseEntity.ok(userService.getUsers(searchRequest))
-    }
-
-    @GetMapping("/{id}")
-    fun getUserById(
-        @PathVariable id: UUID
-    ): ResponseEntity<User> {
-        return ResponseEntity.ok(userService.getUser(id))
-    }
-
-    @PostMapping
-    fun registerUser(
-        @RequestBody @Valid dto: UserRegisterDto
-    ): ResponseEntity<UserResponseDto> {
-        return ResponseEntity.ok(
-            userService.registerUser(dto)
-        )
-    }
-
-    @PutMapping
-    fun updateUser(
-        @RequestBody dto: UserUpdateDto
-    ): ResponseEntity<UserResponseDto> {
-        return ResponseEntity.ok(
-            userService.updateUser(dto)
-        )
-    }
-
-    @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: UUID): ResponseEntity<Void> {
-        userService.deleteUser(id)
-        return ResponseEntity.noContent().build()
-    }
+) : RestControllerTemplate<User>(userService) {
 
     @PostMapping("/import")
     fun importUsersFromExcel(

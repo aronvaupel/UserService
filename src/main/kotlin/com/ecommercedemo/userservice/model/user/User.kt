@@ -4,9 +4,10 @@ import com.ecommercedemo.common.application.validation.password.PasswordCrypto
 import com.ecommercedemo.common.application.validation.password.PasswordValidator
 import com.ecommercedemo.common.application.validation.password.ValidPassword
 import com.ecommercedemo.common.application.validation.userrole.UserRole
-import com.ecommercedemo.common.model.ExtendableBaseEntity
+import com.ecommercedemo.common.model.abstraction.ExpandableBaseEntity
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
+import com.fasterxml.jackson.annotation.JsonCreator
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -36,7 +37,17 @@ open class User(
 
     open var lastActive: LocalDateTime = LocalDateTime.now(),
 
-    ) : ExtendableBaseEntity() {
+    ) : ExpandableBaseEntity() {
+
+    @JsonCreator
+    constructor(
+        id: UUID = UUID.randomUUID(),
+        username: String = "",
+        userRole: UserRole = UserRole.GUEST,
+        userInfo: UserInfo? = null,
+        lastActive: LocalDateTime = LocalDateTime.now(),
+    ) : this(id, username, "", userRole, userInfo, lastActive)
+
     companion object {
         const val STORAGE_NAME = "users"
     }
@@ -58,29 +69,14 @@ open class User(
         )
     }
 
-    open fun copy(
-        id: UUID = this.id,
-        username: String = this.username,
-        password: String = this.password,
-        userRole: UserRole = this.userRole,
-        userInfo: UserInfo? = this.userInfo,
-        lastActive: LocalDateTime = this.lastActive,
-        createdAt: LocalDateTime = this.createdAt,
-        updatedAt: LocalDateTime = this.updatedAt,
-        pseudoProperties: String = this.pseudoProperties
-    ): User {
-        val copiedUser = User(
+    override fun copy(): User {
+        return User(
             id = id,
             username = username,
-            _password = password,
+            _password = _password,
             userRole = userRole,
             userInfo = userInfo,
-            lastActive = lastActive
+            lastActive = lastActive,
         )
-        copiedUser.createdAt = createdAt
-        copiedUser.updatedAt = updatedAt
-        copiedUser.pseudoProperties = pseudoProperties
-        return copiedUser
     }
-
 }
