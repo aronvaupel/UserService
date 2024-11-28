@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service
 @Service
 class PostgresUserPersistenceAdapter(
     repository: UserRepository
-) : PostgresEntityPersistenceAdapter<User>(repository), IUserPersistenceAdapter
+) : PostgresEntityPersistenceAdapter<User>(repository)
 

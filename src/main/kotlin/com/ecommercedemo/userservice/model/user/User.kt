@@ -29,7 +29,7 @@ open class User(
     private var _password: String,
 
     @Enumerated(EnumType.ORDINAL)
-    open val userRole: UserRole,
+    open var userRole: UserRole,
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_info_id", referencedColumnName = "id")
