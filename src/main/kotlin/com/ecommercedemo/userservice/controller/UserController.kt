@@ -2,7 +2,7 @@ package com.ecommercedemo.userservice.controller
 
 import com.ecommercedemo.common.controller.abstraction.RestControllerTemplate
 import com.ecommercedemo.userservice.model.user.User
-import com.ecommercedemo.userservice.service.user.UserService
+import com.ecommercedemo.userservice.service.user.UserRestService
 import org.springframework.context.annotation.DependsOn
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -12,13 +12,13 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/users")
 @Validated
-@DependsOn("userService")
+@DependsOn("userRestService")
 class UserController(
-    private val service: UserService,
+    private val service: UserRestService,
 ) : RestControllerTemplate<User>(service) {
 
     init {
-        println("UserService injected: $service") // Should not be null
+        println("UserRestService injected: $service") // Should not be null
     }
 
     @PostMapping("/import")
