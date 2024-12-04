@@ -5,7 +5,6 @@ import com.ecommercedemo.common.application.validation.email.ValidEmail
 import com.ecommercedemo.common.application.validation.name.ValidName
 import com.ecommercedemo.common.application.validation.phone.ValidPhone
 import com.ecommercedemo.common.application.validation.specialcharacters.ExcludeSpecialCharacters
-import com.ecommercedemo.common.model.abstraction.BaseEntity
 import com.ecommercedemo.common.model.abstraction.ExpandableBaseEntity
 import com.ecommercedemo.userservice.model.user.User
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -61,21 +60,4 @@ open class UserInfo(
         const val STORAGE_NAME = "user_info"
     }
 
-    override fun copy(): BaseEntity {
-        return UserInfo(
-            firstName = this.firstName,
-            lastName = this.lastName,
-            email = this.email,
-            phoneNumber = this.phoneNumber,
-            street = this.street,
-            houseNumber = this.houseNumber,
-            additionalAddressInfo = this.additionalAddressInfo,
-            zipCode = this.zipCode,
-            city = this.city,
-            country = this.country,
-            user = this.user
-        ).apply {
-            this.createdAt = this.createdAt
-        }
-    }
 }

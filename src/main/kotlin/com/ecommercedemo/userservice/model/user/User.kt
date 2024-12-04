@@ -69,14 +69,4 @@ open class User(
         )
     }
 
-    override fun copy(): User {
-        return User(
-            id = id,
-            username = username,
-            _password = _password,
-            userRole = userRole,
-            userInfo = userInfo,
-            lastActive = lastActive,
-        )
-    }
 }

@@ -3,7 +3,7 @@ package com.ecommercedemo.userservice.service._pseudoproperty
 import com.ecommercedemo.common.model.concretion.PseudoProperty
 import com.ecommercedemo.common.persistence.abstraction.IEntityPersistenceAdapter
 import com.ecommercedemo.common.service.abstraction.EventServiceTemplate
-import com.ecommercedemo.common.service.abstraction.ServiceUtility
+import com.ecommercedemo.common.service.concretion.ServiceUtility
 import com.ecommercedemo.userservice.model._pseudoProperty._PseudoProperty
 import org.springframework.stereotype.Service
 
