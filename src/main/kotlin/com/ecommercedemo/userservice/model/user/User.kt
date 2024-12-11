@@ -19,7 +19,7 @@ import java.util.*
 @Table(name = User.STORAGE_NAME)
 @Suppress("unused")
 open class User(
-    override val id: UUID = UUID.randomUUID(),
+    override var id: UUID = UUID.randomUUID(),
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
     open var username: String,
