@@ -10,11 +10,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+      types:
+        registration: hypersistence-utils
+        json-dialect: true
     show-sql: true
     properties:
       '[hypersistence.utils.enable_types_contributor]': false
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   docker:
     compose:

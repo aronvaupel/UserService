@@ -5,7 +5,7 @@ import com.ecommercedemo.common.application.validation.email.ValidEmail
 import com.ecommercedemo.common.application.validation.name.ValidName
 import com.ecommercedemo.common.application.validation.phone.ValidPhone
 import com.ecommercedemo.common.application.validation.specialcharacters.ExcludeSpecialCharacters
-import com.ecommercedemo.common.model.abstraction.ExpandableBaseEntity
+import com.ecommercedemo.common.model.abstraction.AugmentableBaseEntity
 import com.ecommercedemo.userservice.model.user.User
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
@@ -54,7 +54,7 @@ open class UserInfo(
     @NotNull
     @JsonIgnore
     open val user: User? = null
-) : ExpandableBaseEntity() {
+) : AugmentableBaseEntity() {
 
     companion object {
         const val STORAGE_NAME = "user_info"

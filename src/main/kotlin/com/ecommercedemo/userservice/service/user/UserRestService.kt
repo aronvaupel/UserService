@@ -5,6 +5,7 @@ import com.ecommercedemo.common.controller.abstraction.util.Retriever
 import com.ecommercedemo.common.persistence.abstraction.IEntityPersistenceAdapter
 import com.ecommercedemo.common.service.abstraction.RestServiceTemplate
 import com.ecommercedemo.common.service.concretion.ServiceUtility
+import com.ecommercedemo.common.service.concretion.TypeReAttacher
 import com.ecommercedemo.userservice.model.user.User
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Service
@@ -17,14 +18,16 @@ class UserRestService(
     entityManager: EntityManager,
     eventProducer: EntityEventProducer,
     retriever: Retriever,
-    serviceUtility: ServiceUtility,
+    serviceUtility: ServiceUtility<User>,
+    typeReAttacher: TypeReAttacher,
 ) : RestServiceTemplate<User>(
     adapter,
     User::class,
     entityManager,
     eventProducer,
     retriever,
-    serviceUtility
+    serviceUtility,
+    typeReAttacher
 ) {
     fun importUsersFromExcel(file: MultipartFile, sheet: String, rows: Int, evaluationColumn: String) {
                 TODO("Not yet implemented")

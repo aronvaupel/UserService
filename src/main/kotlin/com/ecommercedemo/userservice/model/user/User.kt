@@ -4,49 +4,36 @@ import com.ecommercedemo.common.application.validation.password.PasswordCrypto
 import com.ecommercedemo.common.application.validation.password.PasswordValidator
 import com.ecommercedemo.common.application.validation.password.ValidPassword
 import com.ecommercedemo.common.application.validation.userrole.UserRole
-import com.ecommercedemo.common.model.abstraction.ExpandableBaseEntity
+import com.ecommercedemo.common.model.abstraction.AugmentableBaseEntity
 import com.ecommercedemo.userservice.dto.user.UserResponseDto
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
-import com.fasterxml.jackson.annotation.JsonCreator
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
-import java.util.*
 
 
 @Entity
 @Table(name = User.STORAGE_NAME)
 @Suppress("unused")
 open class User(
-    override var id: UUID = UUID.randomUUID(),
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
-    open var username: String,
+    open var username: String = "",
 
     @ValidPassword
     @NotBlank(message = "Password is mandatory")
-    private var _password: String,
+    private var _password: String = "",
 
     @Enumerated(EnumType.ORDINAL)
-    open var userRole: UserRole,
+    open var userRole: UserRole = UserRole.GUEST,
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_info_id", referencedColumnName = "id")
     open val userInfo: UserInfo? = null,
 
-    open var lastActive: LocalDateTime = LocalDateTime.now(),
-
-    ) : ExpandableBaseEntity() {
-
-    @JsonCreator
-    constructor(
-        id: UUID = UUID.randomUUID(),
-        username: String = "",
-        userRole: UserRole = UserRole.GUEST,
-        userInfo: UserInfo? = null,
-        lastActive: LocalDateTime = LocalDateTime.now(),
-    ) : this(id, username, "", userRole, userInfo, lastActive)
+    open var lastActive: LocalDateTime = LocalDateTime.now()
+    ) : AugmentableBaseEntity() {
 
     companion object {
         const val STORAGE_NAME = "users"

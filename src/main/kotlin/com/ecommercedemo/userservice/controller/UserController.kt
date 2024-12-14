@@ -17,10 +17,6 @@ class UserController(
     private val service: UserRestService,
 ) : RestControllerTemplate<User>(service) {
 
-    init {
-        println("UserRestService injected: $service") // Should not be null
-    }
-
     @PostMapping("/import")
     fun importUsersFromExcel(
         @RequestParam("file") file: MultipartFile,
