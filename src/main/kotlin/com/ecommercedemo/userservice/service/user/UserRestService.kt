@@ -1,34 +1,15 @@
 package com.ecommercedemo.userservice.service.user
 
-import com.ecommercedemo.common.application.kafka.EntityEventProducer
-import com.ecommercedemo.common.controller.abstraction.util.Retriever
-import com.ecommercedemo.common.persistence.abstraction.IEntityPersistenceAdapter
+import com.ecommercedemo.common.service.RestServiceFor
 import com.ecommercedemo.common.service.abstraction.RestServiceTemplate
-import com.ecommercedemo.common.service.concretion.ServiceUtility
-import com.ecommercedemo.common.service.concretion.TypeReAttacher
 import com.ecommercedemo.userservice.model.user.User
-import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
 @Suppress("")
 @Service
-class UserRestService(
-    adapter: IEntityPersistenceAdapter<User>,
-    entityManager: EntityManager,
-    eventProducer: EntityEventProducer,
-    retriever: Retriever,
-    serviceUtility: ServiceUtility<User>,
-    typeReAttacher: TypeReAttacher,
-) : RestServiceTemplate<User>(
-    adapter,
-    User::class,
-    entityManager,
-    eventProducer,
-    retriever,
-    serviceUtility,
-    typeReAttacher
-) {
+@RestServiceFor(User::class)
+class UserRestService: RestServiceTemplate<User>() {
     fun importUsersFromExcel(file: MultipartFile, sheet: String, rows: Int, evaluationColumn: String) {
                 TODO("Not yet implemented")
     }

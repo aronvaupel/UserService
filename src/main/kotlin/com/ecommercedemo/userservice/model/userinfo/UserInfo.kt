@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 @Entity
-@Table(name = UserInfo.STORAGE_NAME)
 open class UserInfo(
     @ValidName
     open val firstName: String,
@@ -54,10 +53,4 @@ open class UserInfo(
     @NotNull
     @JsonIgnore
     open val user: User? = null
-) : AugmentableBaseEntity() {
-
-    companion object {
-        const val STORAGE_NAME = "user_info"
-    }
-
-}
+) : AugmentableBaseEntity()

@@ -1,9 +1,9 @@
 package com.ecommercedemo.userservice.controller
 
+import com.ecommercedemo.common.controller.ControllerFor
 import com.ecommercedemo.common.controller.abstraction.RestControllerTemplate
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.service.user.UserRestService
-import org.springframework.context.annotation.DependsOn
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -12,10 +12,10 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/users")
 @Validated
-@DependsOn("userRestService")
+@ControllerFor(User::class)
 class UserController(
-    private val service: UserRestService,
-) : RestControllerTemplate<User>(service) {
+    private val service: UserRestService
+): RestControllerTemplate<User>() {
 
     @PostMapping("/import")
     fun importUsersFromExcel(

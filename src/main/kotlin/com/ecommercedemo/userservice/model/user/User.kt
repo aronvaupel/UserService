@@ -14,8 +14,8 @@ import java.time.LocalDateTime
 
 
 @Entity
-@Table(name = User.STORAGE_NAME)
 @Suppress("unused")
+@Table(name = "users")
 open class User(
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
@@ -34,10 +34,6 @@ open class User(
 
     open var lastActive: LocalDateTime = LocalDateTime.now()
     ) : AugmentableBaseEntity() {
-
-    companion object {
-        const val STORAGE_NAME = "users"
-    }
 
     open var password: String
         get() = _password

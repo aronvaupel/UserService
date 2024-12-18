@@ -9,7 +9,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       types:
         registration: hypersistence-utils
         json-dialect: true
