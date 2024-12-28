@@ -31,6 +31,7 @@ extra["springCloudVersion"] = "2023.0.3"
 
 repositories {
 	mavenCentral()
+
 	maven {
 		url = uri("https://maven.pkg.github.com/aronvaupel/Commons")
 		credentials {
@@ -39,6 +40,7 @@ repositories {
 			password = env["GITHUB_TOKEN"] ?: ""
 		}
 	}
+
 	maven {
 		url = uri("https://repo.spring.io/milestone")
 	}
@@ -46,6 +48,7 @@ repositories {
 		url = uri("https://repo.spring.io/snapshot")
 	}
 
+	google()
 }
 
 //Todo: Rename all related to docker profile
@@ -55,7 +58,10 @@ val isLocalProfile: Boolean = project.hasProperty("spring.profiles.active") && p
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.18.1")
-	implementation("com.github.aronvaupel:commons:4.6.20")
+	implementation("com.github.aronvaupel:commons:6.3.16")
+	implementation("com.github.javafaker:javafaker:1.0.2"){
+		exclude(group = "org.yaml", module = "snakeyaml")
+	}
 	testImplementation ("com.h2database:h2")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.9.0")

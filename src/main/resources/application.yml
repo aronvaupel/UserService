@@ -13,11 +13,12 @@ spring:
       types:
         registration: hypersistence-utils
         json-dialect: true
-    show-sql: true
+    show-sql: false
     properties:
       '[hypersistence.utils.enable_types_contributor]': false
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   docker:
@@ -40,3 +41,7 @@ eureka:
     enabled: true
     service-url:
       defaultZone: http://eureka-service:8761/eureka/
+
+cache:
+  memory:
+    maxSize: 1000000000

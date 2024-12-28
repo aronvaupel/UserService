@@ -10,10 +10,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       '[hypersistence.utils.enable_types_contributor]': false
       hibernate:
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
   data:
     redis:
@@ -30,10 +31,6 @@ eureka:
 
 logging:
   level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
+    org.hibernate.SQL: OFF
+    org.hibernate.type.descriptor.sql.BasicBinder: OFF
+

@@ -27,11 +27,11 @@ open class UserInfo(
     @ValidPhone
     open val phoneNumber: String? = null,
 
-    @field:Size(max = 10, message = "House number must be less than 100 characters")
+    @field:Size(max = 100, message = "Street must be less than 100 characters")
     @ExcludeSpecialCharacters
     open val street: String? = null,
 
-    @field:Size(max = 10, message = "House number must be less than 10 characters")
+    @field:Size(max = 1000, message = "House number must be less than 1000 characters")
     @ExcludeSpecialCharacters
     open val houseNumber: String? = null,
 

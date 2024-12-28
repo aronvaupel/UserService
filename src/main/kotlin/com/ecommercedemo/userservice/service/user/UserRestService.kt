@@ -6,7 +6,6 @@ import com.ecommercedemo.userservice.model.user.User
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
-@Suppress("")
 @Service
 @RestServiceFor(User::class)
 class UserRestService: RestServiceTemplate<User>() {

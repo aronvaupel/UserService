@@ -30,7 +30,7 @@ open class User(
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_info_id", referencedColumnName = "id")
-    open val userInfo: UserInfo? = null,
+    open var userInfo: UserInfo? = null,
 
     open var lastActive: LocalDateTime = LocalDateTime.now()
     ) : AugmentableBaseEntity() {
