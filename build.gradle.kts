@@ -17,14 +17,17 @@ java {
 
 fun loadEnv(): Map<String, String> {
 	val envFile = file("${rootProject.projectDir}/.env")
-	if (!envFile.exists()) {
-		throw GradleException(".env file not found")
+	return if (envFile.exists()) {
+		envFile.readLines()
+			.filter { it.isNotBlank() && !it.startsWith("#") }
+			.map { it.split("=", limit = 2) }
+			.associate { it[0] to it.getOrElse(1) { "" } }
+	} else {
+		mapOf(
+			"GITHUB_USERNAME" to System.getenv("GITHUB_USERNAME") ?: "",
+			"GITHUB_TOKEN" to System.getenv("GITHUB_TOKEN") ?: ""
+		)
 	}
-
-	return envFile.readLines()
-		.filter { it.isNotBlank() && !it.startsWith("#") }
-		.map { it.split("=", limit = 2) }
-		.associate { it[0] to it.getOrElse(1) { "" } }
 }
 
 extra["springCloudVersion"] = "2023.0.3"
