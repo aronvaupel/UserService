@@ -22,6 +22,7 @@ import java.time.LocalDateTime
 @EnableScheduling
 class UserServiceApplication
 
+//Todo: make java faker optional
 fun main(args: Array<String>) {
     runApplication<UserServiceApplication>(*args)
 }
