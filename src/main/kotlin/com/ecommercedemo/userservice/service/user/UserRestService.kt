@@ -1,7 +1,7 @@
 package com.ecommercedemo.userservice.service.user
 
-import com.ecommercedemo.common.service.RestServiceFor
 import com.ecommercedemo.common.service.abstraction.RestServiceTemplate
+import com.ecommercedemo.common.service.annotation.RestServiceFor
 import com.ecommercedemo.userservice.model.user.User
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile

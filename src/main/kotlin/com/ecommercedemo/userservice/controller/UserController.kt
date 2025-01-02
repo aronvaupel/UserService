@@ -1,7 +1,8 @@
 package com.ecommercedemo.userservice.controller
 
-import com.ecommercedemo.common.controller.ControllerFor
+
 import com.ecommercedemo.common.controller.abstraction.RestControllerTemplate
+import com.ecommercedemo.common.controller.annotation.ControllerFor
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.service.user.UserRestService
 import org.springframework.http.ResponseEntity
