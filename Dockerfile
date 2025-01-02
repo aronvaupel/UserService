@@ -17,7 +17,9 @@ WORKDIR /home/gradle/src
 RUN chmod +x gradlew
 
 # Build the project
-RUN ./gradlew clean build --no-daemon
+RUN ./gradlew clean build --no-daemon \
+    -PgithubUsername=${GITHUB_USERNAME} \
+    -PgithubToken=${GITHUB_TOKEN}
 
 # Stage 2: Create a smaller image for running the application
 FROM eclipse-temurin:21-jdk-alpine

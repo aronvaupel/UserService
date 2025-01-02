@@ -35,8 +35,8 @@ repositories {
 	maven {
 		url = uri("https://maven.pkg.github.com/aronvaupel/Commons")
 		credentials {
-			username = System.getenv("GITHUB_USERNAME") ?: ""
-			password = System.getenv("GITHUB_TOKEN") ?: ""
+			username = findProperty("githubUsername") as String? ?: System.getenv("GITHUB_USERNAME")
+			password = findProperty("githubToken") as String? ?: System.getenv("GITHUB_TOKEN")
 		}
 	}
 
