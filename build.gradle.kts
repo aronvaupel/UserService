@@ -34,11 +34,6 @@ repositories {
 
 	maven {
 		url = uri("https://maven.pkg.github.com/aronvaupel/Commons")
-		credentials {
-			val env = loadEnv()
-			username = env["GITHUB_USERNAME"] ?: ""
-			password = env["GITHUB_TOKEN"] ?: ""
-		}
 	}
 
 	maven {
