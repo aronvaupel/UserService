@@ -9,7 +9,7 @@ ARG GITHUB_TOKEN
 RUN apt-get update && apt-get install -y git
 
 # Clone the repository using GitHub credentials with shallow clone (--depth 1)
-RUN git clone --depth 1 https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/aronvaupel/UserService.git /home/gradle/src
+RUN git clone --depth 1 https://github.com/aronvaupel/UserService.git /home/gradle/src
 
 WORKDIR /home/gradle/src
 
