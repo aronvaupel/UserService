@@ -6,9 +6,9 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${USERSERVICE_DATASOURCE_URL}
+    username: ${USERSERVICE_DATASOURCE_USERNAME}
+    password: ${USERSERVICE_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
