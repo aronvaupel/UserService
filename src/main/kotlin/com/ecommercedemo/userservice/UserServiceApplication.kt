@@ -37,6 +37,8 @@ class UserDataUploader(
         val faker = Faker()
         val users = mutableListOf<User>()
 
+        val allowedRoles = UserRole.entries.filter { it != UserRole.SUPER_ADMIN && it != UserRole.ADMIN }
+
         repeat(100) {
             val userInfo = UserInfo(
                 firstName = faker.name().firstName().take(50),
@@ -57,7 +59,7 @@ class UserDataUploader(
             val user = User(
                 username = faker.name().username(),
                 _password = hashedPassword,
-                userRole = UserRole.entries.toTypedArray().random(),
+                userRole = allowedRoles.random(),
                 userInfo = userInfo,
                 lastActive = LocalDateTime.now().minusDays(faker.number().numberBetween(0, 365).toLong())
             )
