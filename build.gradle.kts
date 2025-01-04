@@ -15,18 +15,6 @@ java {
 	}
 }
 
-fun loadEnv(): Map<String, String> {
-	val envFile = file("${rootProject.projectDir}/.env")
-	if (!envFile.exists()) {
-		throw GradleException(".env file not found")
-	}
-
-	return envFile.readLines()
-		.filter { it.isNotBlank() && !it.startsWith("#") }
-		.map { it.split("=", limit = 2) }
-		.associate { it[0] to it.getOrElse(1) { "" } }
-}
-
 extra["springCloudVersion"] = "2023.0.3"
 
 repositories {
@@ -50,14 +38,13 @@ repositories {
 	google()
 }
 
-//Todo: Rename all related to docker profile
-val isDevProfile: Boolean = project.hasProperty("spring.profiles.active") && project.property("spring.profiles.active") == "dev"
+
 val isLocalProfile: Boolean = project.hasProperty("spring.profiles.active") && project.property("spring.profiles.active") == "local"
 
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.18.1")
-	implementation("com.github.aronvaupel:commons:6.4.12")
+	implementation("com.github.aronvaupel:commons:6.5.0")
 	implementation("com.github.javafaker:javafaker:1.0.2"){
 		exclude(group = "org.yaml", module = "snakeyaml")
 	}
@@ -79,7 +66,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security:3.3.4")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	if (!isDevProfile && !isLocalProfile) {
+	if (!isLocalProfile) {
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	}
 	implementation("org.springframework.kafka:spring-kafka")

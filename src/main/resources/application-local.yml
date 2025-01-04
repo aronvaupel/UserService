@@ -18,10 +18,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-app:
-  env:
-    # Fixme
-    local: true
 
 eureka:
   client:
