@@ -48,4 +48,5 @@ cache:
   memory:
     maxSize: 1000000000
 
-pseudo-properties: true  
+pseudo-properties: true
+permissions: true
