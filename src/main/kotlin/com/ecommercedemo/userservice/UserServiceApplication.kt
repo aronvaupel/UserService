@@ -1,8 +1,11 @@
 package com.ecommercedemo.userservice
 
+import com.ecommercedemo.common.application.kafka.EntityEventProducer
 import com.ecommercedemo.common.application.validation.country.Country
+import com.ecommercedemo.common.application.validation.modification.ModificationType
 import com.ecommercedemo.common.application.validation.password.PasswordCrypto
 import com.ecommercedemo.common.application.validation.userrole.UserRole
+import com.ecommercedemo.common.service.concretion.EntityChangeTracker
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import com.ecommercedemo.userservice.persistence.user.UserPersistenceAdapter
@@ -29,11 +32,20 @@ fun main(args: Array<String>) {
 
 @Component
 class UserDataUploader(
-    private val userPersistenceAdapter: UserPersistenceAdapter
+    private val userPersistenceAdapter: UserPersistenceAdapter,
+    private val entityChangeTracker: EntityChangeTracker<User>,
+    private val eventProducer: EntityEventProducer,
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
+        val createUsers = args.contains("--create-users=true")
         println("Uploading user data...")
+
+        if (!createUsers) {
+            println("User creation skipped. Use '--create-users=true' to create users.")
+            return
+        }
+
         val faker = Faker()
         val users = mutableListOf<User>()
 
@@ -65,6 +77,13 @@ class UserDataUploader(
             )
             println("Generated user: $user")
             users.add(user)
+            eventProducer. emit(
+                User::class.simpleName!!,
+                user.id,
+                ModificationType.CREATE,
+                entityChangeTracker.getChangedProperties(null, user)
+            )
+
         }
 
         println("Saving user data...")

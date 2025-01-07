@@ -1,4 +1,4 @@
-package com.ecommercedemo.userservice.kafka
+package com.ecommercedemo.userservice.kafka._pseudoproperty
 
 import com.ecommercedemo.common.application.kafka.EntityEvent
 import com.ecommercedemo.common.application.kafka.handling.abstraction.ICreateHandler

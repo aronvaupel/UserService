@@ -11,6 +11,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
+import java.util.*
 
 
 @Entity
@@ -27,6 +28,14 @@ open class User(
 
     @Enumerated(EnumType.ORDINAL)
     open var userRole: UserRole = UserRole.GUEST,
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+        name = "user_permissions",
+        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")]
+    )
+    @Column(name = "permission_id", nullable = false)
+    open var permissions: List<UUID> = listOf(),
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_info_id", referencedColumnName = "id")
