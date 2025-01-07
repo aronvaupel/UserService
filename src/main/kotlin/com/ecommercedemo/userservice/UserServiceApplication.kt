@@ -38,7 +38,7 @@ class UserDataUploader(
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
-        val createUsers = args.contains("--create-users=true")
+        val createUsers = System.getenv("CREATE_USERS")?.toBoolean() ?: false
         println("Uploading user data...")
 
         if (!createUsers) {
