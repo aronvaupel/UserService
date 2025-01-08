@@ -44,9 +44,9 @@ class UserDataUploader(
         val createUsers = System.getenv("CREATE_USERS")?.toBoolean() ?: false
 
         if (!createUsers) {
-            log.info ("User creation skipped. Use '--create-users=true' to create users.")
+            log.info ("User creation skipped.")
             return
-        } else log.info("Uploading user data...")
+        } else log.info("Start seeding user data...")
 
         val faker = Faker()
         val users = mutableListOf<User>()
