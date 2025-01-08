@@ -44,7 +44,7 @@ val isLocalProfile: Boolean = project.hasProperty("spring.profiles.active") && p
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.18.1")
-	implementation("com.github.aronvaupel:commons:6.6.20")
+	implementation("com.github.aronvaupel:commons:6.6.21")
 	implementation("com.github.javafaker:javafaker:1.0.2"){
 		exclude(group = "org.yaml", module = "snakeyaml")
 	}
