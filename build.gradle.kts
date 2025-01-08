@@ -48,6 +48,7 @@ dependencies {
 	implementation("com.github.javafaker:javafaker:1.0.2"){
 		exclude(group = "org.yaml", module = "snakeyaml")
 	}
+	implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 	testImplementation ("com.h2database:h2")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 	implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.9.0")

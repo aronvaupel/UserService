@@ -10,6 +10,7 @@ import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.model.userinfo.UserInfo
 import com.ecommercedemo.userservice.persistence.user.UserPersistenceAdapter
 import com.github.javafaker.Faker
+import mu.KotlinLogging
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -37,14 +38,15 @@ class UserDataUploader(
     private val eventProducer: EntityEventProducer,
 ) : CommandLineRunner {
 
+    val log = KotlinLogging.logger {}
+
     override fun run(vararg args: String?) {
         val createUsers = System.getenv("CREATE_USERS")?.toBoolean() ?: false
-        println("Uploading user data...")
 
         if (!createUsers) {
-            println("User creation skipped. Use '--create-users=true' to create users.")
+            log.info ("User creation skipped. Use '--create-users=true' to create users.")
             return
-        }
+        } else log.info("Uploading user data...")
 
         val faker = Faker()
         val users = mutableListOf<User>()
@@ -75,7 +77,7 @@ class UserDataUploader(
                 userInfo = userInfo,
                 lastActive = LocalDateTime.now().minusDays(faker.number().numberBetween(0, 365).toLong())
             )
-            println("Generated user: $user")
+            log.info("Generated user: $user")
             users.add(user)
             eventProducer. emit(
                 User::class.simpleName!!,
@@ -83,12 +85,11 @@ class UserDataUploader(
                 ModificationType.CREATE,
                 entityChangeTracker.getChangedProperties(null, user)
             )
-
         }
 
-        println("Saving user data...")
+        log.info("Saving user data...")
         userPersistenceAdapter.saveAll(users)
-        println("User data uploaded.")
+        log.info("User data uploaded.")
 
     }
 
