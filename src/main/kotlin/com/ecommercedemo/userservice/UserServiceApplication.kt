@@ -79,11 +79,12 @@ class UserDataUploader(
             )
             log.info("Generated user: $user")
             users.add(user)
+            val changes = entityChangeTracker.getChangedProperties(null, user)
             eventProducer. emit(
                 User::class.simpleName!!,
                 user.id,
                 ModificationType.CREATE,
-                entityChangeTracker.getChangedProperties(null, user)
+                changes
             )
         }
 
