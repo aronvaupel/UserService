@@ -41,9 +41,9 @@ class UserDataUploader(
     val log = KotlinLogging.logger {}
 
     override fun run(vararg args: String?) {
-        val createUsers = System.getenv("CREATE_USERS")?.toBoolean() ?: false
+        val createUsers: Int = System.getenv("CREATE_USERS").toInt()
 
-        if (!createUsers) {
+        if (createUsers == 0) {
             log.info ("User creation skipped.")
             return
         } else log.info("Start seeding user data...")
@@ -53,7 +53,7 @@ class UserDataUploader(
 
         val allowedRoles = UserRole.entries.filter { it != UserRole.SUPER_ADMIN && it != UserRole.ADMIN }
 
-        repeat(100) {
+        repeat(createUsers) {
             val userInfo = UserInfo(
                 firstName = faker.name().firstName().take(50),
                 lastName = faker.name().lastName().take(50),
