@@ -50,5 +50,12 @@ cache:
   memory:
     maxSize: 1000000000
 
+logging:
+  level:
+    org.springframework.data: Info
+    org.springframework.context.annotation: WARN
+    org.springframework.boot.autoconfigure: WARN
+    org.apache.kafka: WARN
+
 pseudo-properties: true
 permissions: true
