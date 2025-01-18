@@ -13,6 +13,9 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 @Entity
+@Table(name = "user_info",
+    uniqueConstraints = [UniqueConstraint(columnNames = ["email"])]
+    )
 open class UserInfo(
     @ValidName
     open val firstName: String,

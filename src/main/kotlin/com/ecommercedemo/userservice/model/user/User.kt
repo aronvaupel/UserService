@@ -16,7 +16,11 @@ import java.util.*
 
 @Entity
 @Suppress("unused")
-@Table(name = "users")
+@Table(name = "users",
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["username"])
+    ]
+)
 open class User(
     @field:NotBlank(message = "Username is mandatory")
     @field:Size(max = 50, message = "Username must be less than 50 characters")
