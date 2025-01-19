@@ -5,6 +5,8 @@ import com.ecommercedemo.common.controller.abstraction.RestControllerTemplate
 import com.ecommercedemo.common.controller.annotation.ControllerFor
 import com.ecommercedemo.userservice.model.user.User
 import com.ecommercedemo.userservice.service.user.UserRestService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -14,10 +16,12 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/users")
 @Validated
 @ControllerFor(User::class)
+@Tag(name = "User Management", description = "Endpoints for managing users and their details.")
 class UserController(
     private val service: UserRestService
 ): RestControllerTemplate<User>() {
 
+    @Operation(summary = "Import users from an Excel file.")
     @PostMapping("/import")
     fun importUsersFromExcel(
         @RequestParam("file") file: MultipartFile,
