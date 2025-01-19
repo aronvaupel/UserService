@@ -59,7 +59,7 @@ dependencies {
 	testImplementation("org.mockito:mockito-inline:4.6.1")
 	testImplementation ("org.mockito.kotlin:mockito-kotlin:4.1.0")
 	implementation("org.postgresql:postgresql:42.7.2")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.2")
 	implementation("org.springframework.boot:spring-boot-docker-compose")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
