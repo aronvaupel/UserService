@@ -44,7 +44,7 @@ val isLocalProfile: Boolean = project.hasProperty("spring.profiles.active") && p
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.18.1")
-	implementation("com.github.aronvaupel:commons:7.4.1")
+	implementation("com.github.aronvaupel:commons:7.4.3")
 	implementation("com.github.javafaker:javafaker:1.0.2"){
 		exclude(group = "org.yaml", module = "snakeyaml")
 	}
@@ -59,7 +59,7 @@ dependencies {
 	testImplementation("org.mockito:mockito-inline:4.6.1")
 	testImplementation ("org.mockito.kotlin:mockito-kotlin:4.1.0")
 	implementation("org.postgresql:postgresql:42.7.2")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.2")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 	implementation("org.springframework.boot:spring-boot-docker-compose")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
