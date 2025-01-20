@@ -61,4 +61,10 @@ pseudo-properties: true
 
 permissions: true
 
-
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+    display-request-duration: true
+  api-docs:
+    path: /v3/api-docs
